@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .notification--success {
+            width: 299px;
+            background-color: #E5FFF0;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 16px;
+        }
+
+        .notification__header {
+            display: flex;
+        }
+
+        .notification__title-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .notification__icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        .notification__title {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 100%;
+            letter-spacing: 0;
+            color: #000000;
+        }
+
+        .notification__close-icon {
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .notification__messages-success {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 150%;
+            letter-spacing: 0;
+            color: #000000;
+        }
+    </style>
+</head>
+<body>
+    <div class="notification notification--success">
+        <div class="notification__header">
+            <div class="notification__title-group">
+                <div class="notification__icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M12 2C17.52 2 22 6.48 22 12C22 17.52 17.52 22 12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2ZM10 14.1699L7.41016 11.5898L6 13L10 17L18 9L16.5898 7.58008L10 14.1699Z"
+                            fill="#02EE6A" />
+                    </svg>
+                </div>
+                <p class="notification__title">Success</p>
+            </div>
+           
+        </div>
+        <div class="notification__messages-success">
+        </div>
+    </div>
+</body>
+</html>

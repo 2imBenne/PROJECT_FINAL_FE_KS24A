@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Workspaces</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Reset */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+      }
+
+      /* Layout */
+      .layout {
+        display: flex;
+      }
+
+      .layout__content {
+        flex-grow: 1;
+        padding: 0 24px;
+      }
+
+      /* Menu Button */
+      .menu-button {
+        display: none;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 8px;
+        font-size: 24px;
+        color: #212529;
+      }
+
+      /* Header */
+      .header {
+        height: 72px;
+        border-bottom: 1px solid #dee2e6;
+        padding: 16px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .header__title-container {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+      }
+
+      .header__icon-wrapper {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .header__title {
+        font-weight: 500;
+        font-size: 31.25px;
+        line-height: 38.4px;
+        color: #212529;
+      }
+
+      /* Controls */
+      .controls {
+        display: flex;
+        gap: 8px;
+      }
+
+      .controls__button {
+        height: 34px;
+        padding: 0 12px;
+        font-size: 14px;
+        line-height: 21px;
+        text-align: center;
+        border: 1px solid #6c757d;
+        color: #6c757d;
+        background: none;
+        cursor: pointer;
+      }
+
+      .controls__button--left {
+        width: 55px;
+        border-radius: 4px 0 0 4px;
+      }
+
+      .controls__button--right {
+        width: 60px;
+        border-radius: 0 4px 4px 0;
+        border-left: none;
+      }
+
+      .controls__date-selector {
+        width: 118px;
+        height: 34px;
+        padding: 0 8px;
+        border: 1px solid #6c757d;
+        color: #6c757d;
+        border-radius: 4px;
+        display: flex;
+        gap: 4px;
+        align-items: center;
+        cursor: pointer;
+      }
+
+      .controls__date-selector-text {
+        flex-grow: 1;
+        font-size: 14px;
+        line-height: 21px;
+        text-align: center;
+      }
+
+      /* Content Section */
+      .content {
+        padding: 12px;
+      }
+
+      .content__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+
+      .content__title-container {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .content__title {
+        font-weight: 700;
+        font-size: 18px;
+        line-height: 32px;
+        color: #172b4d;
+      }
+
+      .content__icon-container {
+        width: 32px;
+        height: 32px;
+        border-radius: 3px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .content__action-button {
+        display: flex;
+        align-items: center;
+        height: 32px;
+        padding: 0 10px;
+        border-radius: 3px;
+        border: 1px solid #172b4d;
+        background: none;
+        cursor: pointer;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 32px;
+        color: #172b4d;
+      }
+
+      .content__action-button--board {
+        width: 85.09px;
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+      }
+
+      .content__action-button--table,
+      .content__action-button--close,
+      .content__action-button--filter {
+        border: none;
+      }
+
+      .content__action-button svg {
+        width: 16px;
+        height: 16px;
+      }
+
+      .content__action-button-text {
+        margin-left: 6px;
+      }
+
+      /* Todo List */
+      .todo {
+        width: 272px;
+        background: #f1f2f4;
+        border-radius: 12px;
+        padding: 8px;
+        box-shadow: 0 0 1px 0 #091e424f, 0 1px 1px 0 #091e4240;
+      }
+
+      .todo--in-progress {
+        min-height: 88px;
+      }
+
+      .todo--add-column {
+        min-height: 44px;
+      }
+
+      .todo__header {
+        height: 32px;
+        padding: 7.8px 12px 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .todo__title {
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 20px;
+        color: #172b4d;
+      }
+
+      .todo__menu-icon {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 8px;
+      }
+
+      .todo__menu-icon svg {
+        width: 12px;
+        height: 4px;
+      }
+
+      .todo__list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        list-style: none;
+        margin: 8px 0;
+      }
+
+      .todo__item {
+        width: 100%;
+        height: 36px;
+        background: #ffffff;
+        box-shadow: 0 0 1px 0 #091e424f, 0 1px 1px 0 #091e4240;
+        padding: 8px 12px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .todo__item-icon svg {
+        width: 16px;
+        height: 16px;
+      }
+
+      .todo__item-text {
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 20px;
+        color: #626f86;
+      }
+
+      .todo__footer {
+        height: 32px;
+        padding: 7.8px 12px 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .todo__add-card {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .todo__add-card-icon svg {
+        width: 12px;
+        height: 12px;
+      }
+
+      .todo__add-card-text {
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 20px;
+        color: #44546f;
+      }
+
+      .todo__footer-icon {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 8px;
+      }
+
+      .todo__footer-icon svg {
+        width: 10px;
+        height: 10px;
+      }
+
+      /* Todo Columns Layout */
+      .todo-columns {
+        display: flex;
+        gap: 18px;
+        flex-wrap: wrap;
+      }
+
+      /* Mobile styles */
+      @media (max-width: 768px) {
+        .layout__content {
+          padding: 0 16px;
+        }
+
+        .header {
+          flex-direction: column;
+          align-items: flex-start;
+          height: auto;
+          padding: 12px 0;
+          gap: 12px;
+        }
+
+        .controls {
+          width: 100%;
+          justify-content: flex-start;
+        }
+
+        .menu-button {
+          display: block;
+        }
+
+        .header__icon-wrapper {
+          display: none;
+        }
+
+        .content {
+          width: 100%;
+        }
+
+        .todo {
+          width: 100%;
+        }
+
+        .todo-columns {
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .content__title {
+          font-size: 16px;
+          line-height: 28px;
+        }
+
+        .content__action-button {
+          padding: 0 8px;
+          font-size: 13px;
+        }
+
+        .content__action-button--board {
+          width: 80px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .layout__content {
+          padding: 0 12px;
+        }
+
+        .header__title {
+          font-size: 24px;
+          line-height: 32px;
+        }
+
+        .controls__button,
+        .controls__date-selector {
+          height: 32px;
+          font-size: 13px;
+        }
+
+        .controls__button--left {
+          width: 50px;
+        }
+
+        .controls__button--right {
+          width: 55px;
+        }
+
+        .controls__date-selector {
+          width: 110px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="header"></div>
+    <div class="layout">
+      <div id="sidebar"></div>
+      <div class="layout__content">
+        <div class="content">
+          <div class="content__header">
+            <div class="content__title-container">
+              <p class="content__title">Tổ chức sự kiện Year-end party!</p>
+              <div class="content__icon-container">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 14 14"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M4.15646 12.9966L7.15976 11.4177L10.1631 12.9966C10.3638 13.1021 10.5936 13.1385 10.8171 13.1002C11.3782 13.0039 11.7552 12.471 11.6589 11.9099L11.0853 8.56559L13.515 6.19719C13.6774 6.03892 13.783 5.83159 13.8156 5.60721C13.8975 5.04376 13.5071 4.52063 12.9437 4.43875L9.5859 3.95083L8.08423 0.908159C7.9839 0.704845 7.8193 0.540279 7.61603 0.439939C7.10543 0.187959 6.4873 0.397585 6.2353 0.908159L4.73364 3.95083L1.37585 4.43875C1.15148 4.47135 0.944117 4.57701 0.785857 4.73937C0.388437 5.14708 0.396777 5.79979 0.80449 6.19719L3.23422 8.56559L2.66064 11.9099C2.62231 12.1333 2.65872 12.3631 2.76422 12.5639C3.02917 13.0678 3.6525 13.2615 4.15646 12.9966ZM12.057 5.69892L9.60836 8.08572L10.1864 11.4559L7.15976 9.86472L4.13313 11.4559L4.71116 8.08572L2.26257 5.69892L5.64645 5.20721L7.15976 2.14089L8.6731 5.20721L12.057 5.69892Z"
+                    fill="#172B4D"
+                  />
+                </svg>
+              </div>
+              <button
+                class="content__action-button content__action-button--board"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M1.33325 4.66659V9.99992C1.33325 10.7363 1.93021 11.3333 2.66659 11.3333H3.99992C4.7363 11.3333 5.33325 10.7363 5.33325 9.99992V4.66659C5.33325 3.93021 4.7363 3.33325 3.99992 3.33325H2.66659C1.93021 3.33325 1.33325 3.93021 1.33325 4.66659ZM2.66659 4.66659V9.99992H3.99992V4.66659H2.66659Z"
+                    fill="white"
+                  />
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M6 4.66659V8.66659C6 9.40299 6.59695 9.99992 7.33333 9.99992H8.66667C9.40307 9.99992 10 9.40299 10 8.66659V4.66659C10 3.93021 9.40307 3.33325 8.66667 3.33325H7.33333C6.59695 3.33325 6 3.93021 6 4.66659ZM7.33333 4.66659V8.66659H8.66667V4.66659H7.33333Z"
+                    fill="white"
+                  />
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M10.6667 11.3333V4.66659C10.6667 3.93021 11.2637 3.33325 12.0001 3.33325H13.3334C14.0698 3.33325 14.6667 3.93021 14.6667 4.66659V11.3333C14.6667 12.0697 14.0698 12.6666 13.3334 12.6666H12.0001C11.2637 12.6666 10.6667 12.0697 10.6667 11.3333ZM12.0001 11.3333V4.66659H13.3334V11.3333H12.0001Z"
+                    fill="white"
+                  />
+                </svg>
+                <span class="content__action-button-text">Board</span>
+              </button>
+              <button
+                class="content__action-button content__action-button--table"
+              >
+                <svg
+                  width="16"
+                  height="12"
+                  viewBox="0 0 16 12"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M1.99476 11.3334C1.15318 11.3334 0.470947 10.6512 0.470947 9.8096V2.19056C0.470947 1.34898 1.15318 0.666748 1.99476 0.666748H14.1852C15.0268 0.666748 15.709 1.34898 15.709 2.19056V9.8096C15.709 10.6512 15.0268 11.3334 14.1852 11.3334H1.99476ZM14.1852 6.76199V5.23817H6.56619V6.76199H14.1852ZM14.1852 3.71437V2.19056H6.56619V3.71437H14.1852ZM14.1852 8.2858V9.8096H6.56619V8.2858H14.1852ZM1.99476 5.23817V6.76199H5.04238V5.23817H1.99476ZM1.99476 8.2858V9.8096H5.04238V8.2858H1.99476ZM1.99476 3.71437V2.19056H5.04238V3.71437H1.99476Z"
+                    fill="#172B4D"
+                  />
+                </svg>
+                <span class="content__action-button-text">Table</span>
+              </button>
+              <button
+                class="content__action-button content__action-button--close"
+              >
+                <svg
+                  width="16"
+                  height="17"
+                  viewBox="0 0 16 17"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g clip-path="url(#clip0_1_706)">
+                    <path
+                      d="M1.97363 16H14.0264C14.4217 16 14.7583 15.8608 15.0596 15.5596C15.3539 15.2652 15.4999 14.914 15.5 14.4736V2.47363C15.5 2.0783 15.3608 1.74166 15.0596 1.44043C14.7652 1.1461 14.414 1.00007 13.9736 1H2.02637C1.58599 1.00007 1.23476 1.1461 0.94043 1.44043C0.646104 1.73476 0.500066 2.086 0.5 2.52637V14.4736C0.500066 14.914 0.646104 15.2652 0.94043 15.5596C1.24166 15.8608 1.5783 16 1.97363 16ZM2.02637 15.9863C1.61367 15.9863 1.24533 15.8391 0.953125 15.5469C0.660922 15.2547 0.513743 14.8863 0.513672 14.4736V2.47363C0.513672 2.07681 0.675221 1.73103 0.953125 1.45312C1.23103 1.17522 1.57682 1.01367 1.97363 1.01367H14.0264C14.4232 1.01367 14.769 1.17522 15.0469 1.45312C15.3248 1.73103 15.4863 2.07682 15.4863 2.47363V14.4736C15.4863 14.8863 15.3391 15.2547 15.0469 15.5469C14.769 15.8248 14.4232 15.9863 14.0264 15.9863H2.02637Z"
+                      fill="#172B4D"
+                      stroke="#172B4D"
+                    />
+                  </g>
+                  <rect
+                    x="1"
+                    y="-1"
+                    width="14"
+                    height="14"
+                    transform="matrix(1 0 0 -1 0 14.5)"
+                    stroke="#172B4D"
+                    stroke-width="2"
+                  />
+                  <defs>
+                    <clipPath id="clip0_1_706">
+                      <rect
+                        width="16"
+                        height="16"
+                        transform="matrix(1 0 0 -1 0 16.5)"
+                        fill="white"
+                      />
+                    </clipPath>
+                  </defs>
+                </svg>
+                <span class="content__action-button-text"
+                  >Close this board</span
+                >
+              </button>
+            </div>
+            <button
+              class="content__action-button content__action-button--filter"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M3.07866 4C2.58307 4 2.26074 4.52154 2.48237 4.96481L2.66664 5.33333H13.3333L13.5175 4.96481C13.7392 4.52154 13.4169 4 12.9213 4H3.07866ZM7.2412 11.8157C7.29767 11.9287 7.41307 12 7.53933 12H8.4606C8.58687 12 8.70233 11.9287 8.7588 11.8157L9.33333 10.6667H6.66664L7.2412 11.8157ZM11.3333 8.66667H4.66664L3.99997 7.33333H12L11.3333 8.66667Z"
+                  fill="#172B4D"
+                />
+              </svg>
+              <span class="content__action-button-text">Filters</span>
+            </button>
+          </div>
+          <div class="todo-columns">
+            <div class="todo">
+              <div class="todo__header">
+                <p class="todo__title">Todo</p>
+                <div class="todo__menu-icon">
+                  <svg
+                    width="12"
+                    height="4"
+                    viewBox="0 0 12 4"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M1.33333 3.33341C2.06971 3.33341 2.66667 2.73648 2.66667 2.00008C2.66667 1.26368 2.06971 0.666748 1.33333 0.666748C0.596953 0.666748 0 1.26368 0 2.00008C0 2.73648 0.596953 3.33341 1.33333 3.33341ZM6 3.33341C6.7364 3.33341 7.33333 2.73648 7.33333 2.00008C7.33333 1.26368 6.7364 0.666748 6 0.666748C5.2636 0.666748 4.66667 1.26368 4.66667 2.00008C4.66667 2.73648 5.2636 3.33341 6 3.33341ZM12 2.00008C12 2.73648 11.4031 3.33341 10.6667 3.33341C9.93027 3.33341 9.33333 2.73648 9.33333 2.00008C9.33333 1.26368 9.93027 0.666748 10.6667 0.666748C11.4031 0.666748 12 1.26368 12 2.00008Z"
+                      fill="#626F86"
+                    />
+                  </svg>
+                </div>
+              </div>
+              <ul class="todo__list">
+                <li class="todo__item">
+                  <span class="todo__item-icon">
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M0 8C0 5.87827 0.842855 3.84344 2.34315 2.34315C3.84344 0.842855 5.87827 0 8 0C10.1217 0 12.1566 0.842855 13.6569 2.34315C15.1571 3.84344 16 5.87827 16 8C16 10.1217 15.1571 12.1566 13.6569 13.6569C12.1566 15.1571 10.1217 16 8 16C5.87827 16 3.84344 15.1571 2.34315 13.6569C0.842855 12.1566 0 10.1217 0 8ZM12.326 5.48L11.174 4.52L6.75 9.828L4.826 7.52L3.674 8.48L6.174 11.48C6.24439 11.5644 6.33247 11.6323 6.432 11.6789C6.53154 11.7255 6.6401 11.7497 6.75 11.7497C6.8599 11.7497 6.96846 11.7255 7.068 11.6789C7.16753 11.6323 7.25561 11.5644 7.326 11.48L12.326 5.48Z"
+                        fill="#22A06B"
+                      />
+                    </svg>
+                  </span>
+                  <p class="todo__item-text">Thuê DJ</p>
+                </li>
+                <li class="todo__item">
+                  <span class="todo__item-icon">
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M0 8C0 5.87827 0.842855 3.84344 2.34315 2.34315C3.84344 0.842855 5.87827 0 8 0C10.1217 0 12.1566 0.842855 13.6569 2.34315C15.1571 3.84344 16 5.87827 16 8C16 10.1217 15.1571 12.1566 13.6569 13.6569C12.1566 15.1571 10.1217 16 8 16C5.87827 16 3.84344 15.1571 2.34315 13.6569C0.842855 12.1566 0 10.1217 0 8ZM12.326 5.48L11.174 4.52L6.75 9.828L4.826 7.52L3.674 8.48L6.174 11.48C6.24439 11.5644 6.33247 11.6323 6.432 11.6789C6.53154 11.7255 6.6401 11.7497 6.75 11.7497C6.8599 11.7497 6.96846 11.7255 7.068 11.6789C7.16753 11.6323 7.25561 11.5644 7.326 11.48L12.326 5.48Z"
+                        fill="#22A06B"
+                      />
+                    </svg>
+                  </span>
+                  <p class="todo__item-text">Thuê DJ</p>
+                </li>
+                <li class="todo__item">
+                  <span class="todo__item-icon">
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M0 8C0 5.87827 0.842855 3.84344 2.34315 2.34315C3.84344 0.842855 5.87827 0 8 0C10.1217 0 12.1566 0.842855 13.6569 2.34315C15.1571 3.84344 16 5.87827 16 8C16 10.1217 15.1571 12.1566 13.6569 13.6569C12.1566 15.1571 10.1217 16 8 16C5.87827 16 3.84344 15.1571 2.34315 13.6569C0.842855 12.1566 0 10.1217 0 8ZM12.326 5.48L11.174 4.52L6.75 9.828L4.826 7.52L3.674 8.48L6.174 11.48C6.24439 11.5644 6.33247 11.6323 6.432 11.6789C6.53154 11.7255 6.6401 11.7497 6.75 11.7497C6.8599 11.7497 6.96846 11.7255 7.068 11.6789C7.16753 11.6323 7.25561 11.5644 7.326 11.48L12.326 5.48Z"
+                        fill="#22A06B"
+                      />
+                    </svg>
+                  </span>
+                  <p class="todo__item-text">Thuê DJ</p>
+                </li>
+                <li class="todo__item">
+                  <span class="todo__item-icon">
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M0 8C0 5.87827 0.842855 3.84344 2.34315 2.34315C3.84344 0.842855 5.87827 0 8 0C10.1217 0 12.1566 0.842855 13.6569 2.34315C15.1571 3.84344 16 5.87827 16 8C16 10.1217 15.1571 12.1566 13.6569 13.6569C12.1566 15.1571 10.1217 16 8 16C5.87827 16 3.84344 15.1571 2.34315 13.6569C0.842855 12.1566 0 10.1217 0 8ZM12.326 5.48L11.174 4.52L6.75 9.828L4.826 7.52L3.674 8.48L6.174 11.48C6.24439 11.5644 6.33247 11.6323 6.432 11.6789C6.53154 11.7255 6.6401 11.7497 6.75 11.7497C6.8599 11.7497 6.96846 11.7255 7.068 11.6789C7.16753 11.6323 7.25561 11.5644 7.326 11.48L12.326 5.48Z"
+                        fill="#22A06B"
+                      />
+                    </svg>
+                  </span>
+                  <p class="todo__item-text">Thuê DJ</p>
+                </li>
+              </ul>
+              <div class="todo__footer">
+                <div class="todo__add-card">
+                  <span class="todo__add-card-icon">
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 12 12"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M6 0C5.6318 0 5.33333 0.29848 5.33333 0.666667V5.33333H0.666667C0.29848 5.33333 0 5.6318 0 6C0 6.3682 0.29848 6.66667 0.666667 6.66667H5.33333V11.3333C5.33333 11.7015 5.6318 12 6 12C6.3682 12 6.66667 11.7015 6.66667 11.3333V6.66667H11.3333C11.7015 6.66667 12 6.3682 12 6C12 5.6318 11.7015 5.33333 11.3333 5.33333H6.66667V0.666667C6.66667 0.29848 6.3682 0 6 0Z"
+                        fill="#44546F"
+                      />
+                    </svg>
+                  </span>
+                  <p class="todo__add-card-text">Add a card</p>
+                </div>
+                <div class="todo__footer-icon">
+                  <svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 10 10"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M0 1.33333C0 0.596953 0.596953 0 1.33333 0H8.66667C9.40307 0 10 0.596953 10 1.33333V8C10 8.7364 9.40307 9.33333 8.66667 9.33333H1.33333C0.596953 9.33333 0 8.7364 0 8V1.33333ZM1.33333 1.33333H8.66667V5.33333H1.33333V1.33333ZM8 8C7.6318 8 7.33333 7.70153 7.33333 7.33333C7.33333 6.96513 7.6318 6.66667 8 6.66667C8.3682 6.66667 8.66667 6.96513 8.66667 7.33333C8.66667 7.70153 8.3682 8 8 8ZM1.33333 7.33333C1.33333 7.70153 1.63181 8 2 8H4C4.3682 8 4.66667 7.70153 4.66667 7.33333C4.66667 6.96513 4.3682 6.66667 4 6.66667H2C1.63181 6.66667 1.33333 6.96513 1.33333 7.33333Z"
+                      fill="#626F86"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <div class="todo todo--in-progress" style="height: 88px">
+              <div class="todo__header">
+                <p class="todo__title">In-progress</p>
+                <div class="todo__menu-icon">
+                  <svg
+                    width="12"
+                    height="4"
+                    viewBox="0 0 12 4"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M1.33333 3.33341C2.06971 3.33341 2.66667 2.73648 2.66667 2.00008C2.66667 1.26368 2.06971 0.666748 1.33333 0.666748C0.596953 0.666748 0 1.26368 0 2.00008C0 2.73648 0.596953 3.33341 1.33333 3.33341ZM6 3.33341C6.7364 3.33341 7.33333 2.73648 7.33333 2.00008C7.33333 1.26368 6.7364 0.666748 6 0.666748C5.2636 0.666748 4.66667 1.26368 4.66667 2.00008C4.66667 2.73648 5.2636 3.33341 6 3.33341ZM12 2.00008C12 2.73648 11.4031 3.33341 10.6667 3.33341C9.93027 3.33341 9.33333 2.73648 9.33333 2.00008C9.33333 1.26368 9.93027 0.666748 10.6667 0.666748C11.4031 0.666748 12 1.26368 12 2.00008Z"
+                      fill="#626F86"
+                    />
+                  </svg>
+                </div>
+              </div>
+              <div class="todo__footer">
+                <div class="todo__add-card">
+                  <span class="todo__add-card-icon">
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 12 12"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M6 0C5.6318 0 5.33333 0.29848 5.33333 0.666667V5.33333H0.666667C0.29848 5.33333 0 5.6318 0 6C0 6.3682 0.29848 6.66667 0.666667 6.66667H5.33333V11.3333C5.33333 11.7015 5.6318 12 6 12C6.3682 12 6.66667 11.7015 6.66667 11.3333V6.66667H11.3333C11.7015 6.66667 12 6.3682 12 6C12 5.6318 11.7015 5.33333 11.3333 5.33333H6.66667V0.666667C6.66667 0.29848 6.3682 0 6 0Z"
+                        fill="#44546F"
+                      />
+                    </svg>
+                  </span>
+                  <p class="todo__add-card-text">Add a card</p>
+                </div>
+                <div class="todo__footer-icon">
+                  <svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 10 10"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M0 1.33333C0 0.596953 0.596953 0 1.33333 0H8.66667C9.40307 0 10 0.596953 10 1.33333V8C10 8.7364 9.40307 9.33333 8.66667 9.33333H1.33333C0.596953 9.33333 0 8.7364 0 8V1.33333ZM1.33333 1.33333H8.66667V5.33333H1.33333V1.33333ZM8 8C7.6318 8 7.33333 7.70153 7.33333 7.33333C7.33333 6.96513 7.6318 6.66667 8 6.66667C8.3682 6.66667 8.66667 6.96513 8.66667 7.33333C8.66667 7.70153 8.3682 8 8 8ZM1.33333 7.33333C1.33333 7.70153 1.63181 8 2 8H4C4.3682 8 4.66667 7.70153 4.66667 7.33333C4.66667 6.96513 4.3682 6.66667 4 6.66667H2C1.63181 6.66667 1.33333 6.96513 1.33333 7.33333Z"
+                      fill="#626F86"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <div class="todo" style="height: 44px">
+              <div class="todo__footer">
+                <div class="todo__add-card">
+                  <span class="todo__add-card-icon">
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 12 12"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M6 0C5.6318 0 5.33333 0.29848 5.33333 0.666667V5.33333H0.666667C0.29848 5.33333 0 5.6318 0 6C0 6.3682 0.29848 6.66667 0.666667 6.66667H5.33333V11.3333C5.33333 11.7015 5.6318 12 6 12C6.3682 12 6.66667 11.7015 6.66667 11.3333V6.66667H11.3333C11.7015 6.66667 12 6.3682 12 6C12 5.6318 11.7015 5.33333 11.3333 5.33333H6.66667V0.666667C6.66667 0.29848 6.3682 0 6 0Z"
+                        fill="#44546F"
+                      />
+                    </svg>
+                  </span>
+                  <p class="todo__add-card-text">Add a card</p>
+                </div>
+                <div class="todo__footer-icon">
+                  <svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 10 10"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M0 1.33333C0 0.596953 0.596953 0 1.33333 0H8.66667C9.40307 0 10 0.596953 10 1.33333V8C10 8.7364 9.40307 9.33333 8.66667 9.33333H1.33333C0.596953 9.33333 0 8.7364 0 8V1.33333ZM1.33333 1.33333H8.66667V5.33333H1.33333V1.33333ZM8 8C7.6318 8 7.33333 7.70153 7.33333 7.33333C7.33333 6.96513 7.6318 6.66667 8 6.66667C8.3682 6.66667 8.66667 6.96513 8.66667 7.33333C8.66667 7.70153 8.3682 8 8 8ZM1.33333 7.33333C1.33333 7.70153 1.63181 8 2 8H4C4.3682 8 4.66667 7.70153 4.66667 7.33333C4.66667 6.96513 4.3682 6.66667 4 6.66667H2C1.63181 6.66667 1.33333 6.96513 1.33333 7.33333Z"
+                      fill="#626F86"
+                    />
+                  </svg>
+                </div>
+              </div>
+
+              <div class="todo" style="margin-top: 18px;">
+                <input
+                  style="
+                    box-shadow: 0px 0px 0px 1px #8590a2 inset;
+                    border-radius: 4px;
+                    border: none;
+                    width: 100%;
+                    height: 32px;
+                    font-family: Roboto;
+                    font-weight: 600;
+                    font-size: 14px;
+                    line-height: 20px;
+                    letter-spacing: 0%;
+                    vertical-align: middle;
+                    padding: 6px 12px;
+                  "
+                  placeholder="Enter list name…"
+                  type="text"
+                />
+                <div style="display: flex; gap:16px; margin-top: 8px;">
+                  <button
+                    style="
+                      width: 73.63999938964844px;
+                      height: 32px;
+                      font-weight: 500;
+                      font-size: 14px;
+                      line-height: 20px;
+                      letter-spacing: 0%;
+                      text-align: center;
+                      vertical-align: middle;
+                      border: none;
+                      background: #0c66e4;
+                      color: #ffffff;
+
+                      border-radius: 3px;
+                    "
+                  >
+                    Add list
+                  </button>
+                  <div
+                    style="
+                      width: 32px;
+                      height: 32px;
+
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                      border-radius: 3px;
+                    "
+                  >
+                    <svg
+                      width="13"
+                      height="12"
+                      viewBox="0 0 13 12"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M5.46147 6.00008L1.05072 1.58934C0.725282 1.2639 0.725282 0.736265 1.05072 0.410823C1.37616 0.0853897 1.90379 0.0853897 2.22923 0.410823L6.63997 4.82158L11.0507 0.410823C11.3761 0.0853897 11.9038 0.0853897 12.2292 0.410823C12.5546 0.736265 12.5546 1.2639 12.2292 1.58934L7.81847 6.00008L12.2292 10.4108C12.5546 10.7362 12.5546 11.2639 12.2292 11.5893C11.9038 11.9147 11.3761 11.9147 11.0507 11.5893L6.63997 7.17858L2.22923 11.5893C1.90379 11.9147 1.37616 11.9147 1.05072 11.5893C0.725282 11.2639 0.725282 10.7362 1.05072 10.4108L5.46147 6.00008Z"
+                        fill="#172B4D"
+                      />
+                    </svg>
+                  </div>
+
+                  <div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function toggleSidebar() {
+        document.getElementById("sidebar").classList.toggle("open");
+      }
+
+      document.addEventListener("click", (event) => {
+        const sidebar = document.getElementById("sidebar");
+        const menuButton = document.querySelector(".menu-button");
+        if (
+          sidebar.classList.contains("open") &&
+          !sidebar.contains(event.target) &&
+          !menuButton?.contains(event.target)
+        ) {
+          sidebar.classList.remove("open");
+        }
+      });
+
+      async function loadComponent(file, elementId) {
+        try {
+          const response = await fetch(file);
+          if (!response.ok) throw new Error(`Failed to fetch ${file}`);
+          document.getElementById(elementId).innerHTML = await response.text();
+        } catch (error) {
+          console.error(`Error loading ${file}:`, error);
+        }
+      }
+
+      loadComponent("./components/header.html", "header");
+      loadComponent("./components/sidebarBoard.html", "sidebar");
+    </script>
+  </body>
+</html>
