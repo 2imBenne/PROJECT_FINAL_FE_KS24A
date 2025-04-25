@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .popup {
+    width: 512px;
+    height: 341.49px;
+    background-color: #FFFFFF;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    align-items: center;
+    padding-top: 40px;
+    padding-bottom: 25px;
+}
+
+.popup__icon-wrapper {
+    width: 88px;
+    height: 88px;
+    border: 4px solid #F8BB86;
+    border-radius: 44px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup__icon {
+    width: 16px;
+    height: 80px;
+    font-family: Montserrat, sans-serif;
+    font-weight: 400;
+    font-size: 60px;
+    line-height: 80px;
+    color: #F8BB86;
+    margin: 0;
+}
+
+.popup__title {
+    font-family: Montserrat, sans-serif;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 45px;
+    color: #545454;
+    margin: 0;
+}
+
+.popup__subtitle {
+    font-family: Montserrat, sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 100%;
+    color: #545454;
+    margin: 0;
+}
+
+.popup__actions {
+    display: flex;
+    gap: 10px;
+}
+
+.popup__button {
+    font-family: Montserrat, sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 100%;
+    color: #FFFFFF;
+    text-align: center;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.popup__button--confirm {
+    width: 138.79px;
+    height: 39.5px;
+    background: #3085D6;
+}
+
+.popup__button--cancel {
+    width: 89.49px;
+    height: 39.5px;
+    background: #DD3333;
+}
+
+    </style>
+</head>
+<body>
+    <div class="popup">
+        <div class="popup__icon-wrapper">
+            <p class="popup__icon">!</p>
+        </div>
+        <p class="popup__title">Are you sure?</p>
+        <p class="popup__subtitle">You won't be able to revert this!</p>
+        <div class="popup__actions">
+            <button class="popup__button popup__button--confirm">Yes, close it!</button>
+            <button class="popup__button popup__button--cancel">Cancel</button>
+        </div>
+    </div>
+    
+</body>
+</html>

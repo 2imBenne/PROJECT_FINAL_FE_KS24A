@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Workspaces</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet" />
+    <style>
+        /* Reset and base styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Roboto", sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Layout */
+        .layout {
+            display: flex;
+        }
+
+        .layout__content {
+            width: 100%;
+            padding: 0 24px;
+        }
+
+        /* Sidebar styles */
+      
+        /* Menu button */
+        .menu-button {
+            display: none;
+            /* Hidden by default (visible on mobile) */
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            font-size: 24px;
+            color: #212529;
+        }
+
+        /* Header section */
+        .section1 {
+            width: 100%;
+            height: 72px;
+            border-bottom: 1px solid #dee2e6;
+            padding: 16px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header__title-container {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .header__icon-wrapper {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: transparent;
+        }
+
+        .header__title {
+            font-weight: 500;
+            font-size: 31.25px;
+            line-height: 38.4px;
+            color: #212529;
+        }
+
+        /* Controls section */
+        .controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .button-group {
+            display: flex;
+        }
+
+        .button {
+            height: 34px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Roboto, sans-serif;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 21px;
+            text-align: center;
+            border: 1px solid #6c757d;
+            color: #6c757d;
+            background-color: transparent;
+            cursor: pointer;
+            padding: 0 12px;
+        }
+
+        .button--left {
+            width: 55px;
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+        }
+
+        .button--right {
+            width: 60px;
+            border-top-right-radius: 4px;
+            border-bottom-right-radius: 4px;
+            border-left: none;
+        }
+
+        .date-selector {
+            display: flex;
+            gap: 4px;
+            padding: 0 8px;
+            width: 118px;
+            height: 34px;
+            border: 1px solid #6c757d;
+            color: #6c757d;
+            border-radius: 4px;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .date-selector__text {
+            flex-grow: 1;
+            font-family: Roboto;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 21px;
+            text-align: center;
+        }
+
+        /* Content grid */
+        .workspace-grid {
+            padding: 12px;
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            list-style: none;
+        }
+
+        .workspace-card {
+            position: relative;
+            width: 270px;
+            height: 130px;
+            background: rgba(84, 84, 84, 0.22);
+            overflow: hidden;
+            border-radius: 4px;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .workspace-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .workspace-card__image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .workspace-card__content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: linear-gradient(to top,
+                    rgba(0, 0, 0, 0.7) 0%,
+                    rgba(0, 0, 0, 0.3) 50%,
+                    rgba(0, 0, 0, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .workspace-card:hover .workspace-card__content {
+            opacity: 1;
+        }
+
+        .workspace-card__title {
+            font-weight: 500;
+            font-size: 18.44px;
+            line-height: 24px;
+            color: #ffffff;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+            transform: translateY(-10px);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .workspace-card:hover .workspace-card__title {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .workspace-card__button {
+            width: 168px;
+            height: 32px;
+            border-radius: 3px;
+            background: #2c3e5d;
+            padding: 8px 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            color: #ffffff;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 20px;
+            border: none;
+            cursor: pointer;
+            transform: translateY(10px);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease,
+                background-color 0.2s ease;
+        }
+
+        .workspace-card:hover .workspace-card__button {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .workspace-card__button:hover {
+            background: #3a5179;
+        }
+
+        .icon-placeholder {
+            width: 16px;
+            height: 16px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+        }
+
+        /* Mobile styles */
+        @media (max-width: 768px) {
+            #sidebar {
+                display: block;
+            }
+
+            .header__icon-wrapper {
+                display: none;
+            }
+
+            .layout__content {
+                padding: 0 16px;
+            }
+
+            .section1 {
+                flex-direction: column;
+                align-items: flex-start;
+                height: auto;
+                padding: 12px 0;
+                gap: 12px;
+            }
+
+            .header__title-container {
+                justify-content: flex-start;
+            }
+
+            .controls {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .menu-button {
+                display: block;
+                /* Show menu button on mobile */
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header"></div>
+    <div class="layout">
+        <div id="sidebar"></div>
+
+        <div class="layout__content">
+            <div class="section1">
+                <div class="header__title-container">
+                    <button class="menu-button" onclick="toggleSidebar()">☰</button>
+                    <div class="header__icon-wrapper">
+                        <svg width="28" height="20" viewBox="0 0 28 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M2.05336 0.0132942C1.76892 0.0132942 1.52003 0.102182 1.30669 0.279961C1.09336 0.457739 0.986694 0.688848 0.986694 0.973293V2.99996C0.986694 3.2844 1.09336 3.51552 1.30669 3.69329C1.52003 3.87107 1.76892 3.95996 2.05336 3.95996H3.97336C4.25781 3.95996 4.50669 3.87107 4.72003 3.69329C4.93336 3.51552 5.04003 3.2844 5.04003 2.99996V0.973293C5.04003 0.688848 4.93336 0.457739 4.72003 0.279961C4.50669 0.102182 4.25781 0.0132942 3.97336 0.0132942H2.05336ZM3.97336 0.973293H2.05336V2.99996H3.97336V0.973293ZM8.02669 2.03996C8.02669 1.75552 8.11558 1.50663 8.29336 1.29329C8.47114 1.07996 8.70225 0.973293 8.98669 0.973293H27.0134C27.2978 0.973293 27.5289 1.07996 27.7067 1.29329C27.8845 1.50663 27.9734 1.75552 27.9734 2.03996C27.9734 2.32441 27.8845 2.55552 27.7067 2.73329C27.5289 2.91107 27.2978 2.99996 27.0134 2.99996H8.98669C8.70225 2.99996 8.47114 2.91107 8.29336 2.73329C8.11558 2.55552 8.02669 2.32441 8.02669 2.03996ZM8.98669 8.97329C8.70225 8.97329 8.47114 9.07996 8.29336 9.29329C8.11558 9.50663 8.02669 9.75552 8.02669 10.04C8.02669 10.3244 8.11558 10.5555 8.29336 10.7333C8.47114 10.9111 8.70225 11 8.98669 11H27.0134C27.2978 11 27.5289 10.9111 27.7067 10.7333C27.8845 10.5555 27.9734 10.3244 27.9734 10.04C27.9734 9.75552 27.8845 9.50663 27.7067 9.29329C27.5289 9.07996 27.2978 8.97329 27.0134 8.97329H8.98669ZM8.98669 16.9733C8.70225 16.9733 8.47114 17.08 8.29336 17.2933C8.11558 17.5066 8.02669 17.7555 8.02669 18.04C8.02669 18.3244 8.11558 18.5555 8.29336 18.7333C8.47114 18.9111 8.70225 19 8.98669 19H27.0134C27.2978 19 27.5289 18.9111 27.7067 18.7333C27.8845 18.5555 27.9734 18.3244 27.9734 18.04C27.9734 17.7555 27.8845 17.5066 27.7067 17.2933C27.5289 17.08 27.2978 16.9733 27.0134 16.9733H8.98669ZM0.986694 8.97329C0.986694 8.68885 1.09336 8.45774 1.30669 8.27996C1.52003 8.10218 1.76892 8.01329 2.05336 8.01329H3.97336C4.25781 8.01329 4.50669 8.10218 4.72003 8.27996C4.93336 8.45774 5.04003 8.68885 5.04003 8.97329V11C5.04003 11.2844 4.93336 11.5155 4.72003 11.6933C4.50669 11.8711 4.25781 11.96 3.97336 11.96H2.05336C1.76892 11.96 1.52003 11.8711 1.30669 11.6933C1.09336 11.5155 0.986694 11.2844 0.986694 11V8.97329ZM2.05336 8.97329H3.97336V11H2.05336V8.97329ZM2.05336 16.0133C1.76892 16.0133 1.52003 16.1022 1.30669 16.28C1.09336 16.4577 0.986694 16.6888 0.986694 16.9733V19C0.986694 19.2844 1.09336 19.5155 1.30669 19.6933C1.52003 19.8711 1.76892 19.96 2.05336 19.96H3.97336C4.25781 19.96 4.50669 19.8711 4.72003 19.6933C4.93336 19.5155 5.04003 19.2844 5.04003 19V16.9733C5.04003 16.6888 4.93336 16.4577 4.72003 16.28C4.50669 16.1022 4.25781 16.0133 3.97336 16.0133H2.05336ZM3.97336 16.9733H2.05336V19H3.97336V16.9733Z"
+                                fill="#212529" />
+                        </svg>
+                    </div>
+                    <h1 class="header__title">Your Workspaces</h1>
+                </div>
+                <div class="controls">
+                    <div class="button-group">
+                        <button class="button button--left">Share</button>
+                        <button class="button button--right">Export</button>
+                    </div>
+                    <div class="date-selector">
+                        <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g clip-path="url(#clip0_1_508)">
+                                <path
+                                    d="M4.31004 0.199951C4.45226 0.199951 4.56782 0.244395 4.65671 0.333284C4.74559 0.422173 4.79004 0.537728 4.79004 0.679951V1.21328H12.79V0.679951C12.79 0.537728 12.8345 0.422173 12.9234 0.333284C13.0123 0.244395 13.1278 0.199951 13.27 0.199951C13.4123 0.199951 13.5367 0.244395 13.6434 0.333284C13.75 0.422173 13.8034 0.537728 13.8034 0.679951V1.21328H14.8167C15.35 1.21328 15.8123 1.40884 16.2034 1.79995C16.5945 2.19106 16.79 2.65328 16.79 3.18662V14.1733C16.79 14.7422 16.5945 15.2222 16.2034 15.6133C15.8123 16.0044 15.3323 16.2 14.7634 16.2H2.81671C2.24782 16.2 1.76782 16.0044 1.37671 15.6133C0.985595 15.2222 0.790039 14.76 0.790039 14.2266V3.18662C0.790039 2.65328 0.985595 2.19106 1.37671 1.79995C1.76782 1.40884 2.24782 1.21328 2.81671 1.21328H3.77671V0.679951C3.77671 0.537728 3.83004 0.422173 3.93671 0.333284C4.04337 0.244395 4.16782 0.199951 4.31004 0.199951ZM1.80337 4.19995V14.1733C1.80337 14.4577 1.90115 14.6977 2.09671 14.8933C2.29226 15.0888 2.53226 15.1866 2.81671 15.1866H14.8167C15.0656 15.1866 15.2878 15.0888 15.4834 14.8933C15.6789 14.6977 15.7767 14.4577 15.7767 14.1733V4.19995H1.80337Z"
+                                    fill="#6C757D" />
+                            </g>
+                            <defs>
+                                <clipPath id="clip0_1_508">
+                                    <rect width="16" height="16" fill="white"
+                                        transform="matrix(1 0 0 -1 0.790039 16.2)" />
+                                </clipPath>
+                            </defs>
+                        </svg>
+                        <span class="date-selector__text">This week</span>
+                        <svg width="8" height="5" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <mask id="path-1-inside-1_1_511" fill="white">
+                                <path d="M0 0.199951H8V4.19995H0V0.199951Z" />
+                            </mask>
+                            <g clip-path="url(#paint0_diamond_1_511_clip_path)" data-figma-skip-parse="true"
+                                mask="url(#path-1-inside-1_1_511)">
+                                <g transform="matrix(0.004 0 0 0.004 4 0.199951)">
+                                    <rect x="0" y="0" width="1250" height="1250" fill="url(#paint0_diamond_1_511)"
+                                        opacity="1" shape-rendering="crispEdges" />
+                                    <rect x="0" y="0" width="1250" height="1250" transform="scale(1 -1)"
+                                        fill="url(#paint0_diamond_1_511)" opacity="1" shape-rendering="crispEdges" />
+                                    <rect x="0" y="0" width="1250" height="1250" transform="scale(-1 1)"
+                                        fill="url(#paint0_diamond_1_511)" opacity="1" shape-rendering="crispEdges" />
+                                    <rect x="0" y="0" width="1250" height="1250" transform="scale(-1)"
+                                        fill="url(#paint0_diamond_1_511)" opacity="1" shape-rendering="crispEdges" />
+                                </g>
+                            </g>
+                            <path
+                                d="M0 0.199951V-3.80005H-4V0.199951H0ZM8 0.199951H12V-3.80005H8V0.199951ZM0 0.199951V4.19995H8V0.199951V-3.80005H0V0.199951ZM8 0.199951H4V4.19995H8H12V0.199951H8ZM0 4.19995H4V0.199951H0H-4V4.19995H0Z"
+                                data-figma-gradient-fill="{&#34;type&#34;:&#34;GRADIENT_DIAMOND&#34;,&#34;stops&#34;:[{&#34;color&#34;:{&#34;r&#34;:0.42352941632270813,&#34;g&#34;:0.45882353186607361,&#34;b&#34;:0.49019607901573181,&#34;a&#34;:1.0},&#34;position&#34;:0.99999988079071045},{&#34;color&#34;:{&#34;r&#34;:0.0,&#34;g&#34;:0.0,&#34;b&#34;:0.0,&#34;a&#34;:0.0},&#34;position&#34;:1.0}],&#34;stopsVar&#34;:[{&#34;color&#34;:{&#34;r&#34;:0.42352941632270813,&#34;g&#34;:0.45882353186607361,&#34;b&#34;:0.49019607901573181,&#34;a&#34;:1.0},&#34;position&#34;:0.99999988079071045},{&#34;color&#34;:{&#34;r&#34;:0.0,&#34;g&#34;:0.0,&#34;b&#34;:0.0,&#34;a&#34;:0.0},&#34;position&#34;:1.0}],&#34;transform&#34;:{&#34;m00&#34;:8.0,&#34;m01&#34;:0.0,&#34;m02&#34;:0.0,&#34;m10&#34;:0.0,&#34;m11&#34;:8.0,&#34;m12&#34;:-3.8000488281250},&#34;opacity&#34;:1.0,&#34;blendMode&#34;:&#34;NORMAL&#34;,&#34;visible&#34;:true}"
+                                mask="url(#path-1-inside-1_1_511)" />
+                            <defs>
+                                <clipPath id="paint0_diamond_1_511_clip_path">
+                                    <path
+                                        d="M0 0.199951V-3.80005H-4V0.199951H0ZM8 0.199951H12V-3.80005H8V0.199951ZM0 0.199951V4.19995H8V0.199951V-3.80005H0V0.199951ZM8 0.199951H4V4.19995H8H12V0.199951H8ZM0 4.19995H4V0.199951H0H-4V4.19995H0Z"
+                                        mask="url(#path-1-inside-1_1_511)" />
+                                </clipPath>
+                                <linearGradient id="paint0_diamond_1_511" x1="0" y1="0" x2="500" y2="500"
+                                    gradientUnits="userSpaceOnUse">
+                                    <stop offset="1" stop-color="#6C757D" />
+                                    <stop offset="1" stop-opacity="0" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <ul class="workspace-grid">
+                <li class="workspace-card">
+                    <img class="workspace-card__image" src="./assets/images/image1.jpg" alt="Board thumbnail" />
+                    <div class="workspace-card__content">
+                        <p class="workspace-card__title">Board Title 01</p>
+                        <button class="workspace-card__button">
+                            <svg width="13" height="14" viewBox="0 0 13 14" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M7.74754 0.871848C7.22687 0.351148 6.3826 0.351148 5.86194 0.871848L1.61928 5.11449C-0.20317 6.9369 -0.20317 9.8917 1.61928 11.7142C3.44172 13.5366 6.39647 13.5366 8.21894 11.7142L12.4616 7.4715C12.9823 6.95084 12.9823 6.10657 12.4616 5.58589L7.74754 0.871848ZM11.5188 6.5287L6.80474 1.81465L2.56209 6.0573C1.26034 7.35904 1.26034 9.46957 2.56209 10.7714C3.86384 12.0731 5.9744 12.0731 7.27614 10.7714L11.5188 6.5287ZM5.66667 8.33344C5.66667 8.70164 5.36819 9.0001 5 9.0001C4.63182 9.0001 4.33334 8.70164 4.33334 8.33344C4.33334 7.96524 4.63182 7.66677 5 7.66677C5.36819 7.66677 5.66667 7.96524 5.66667 8.33344ZM7 8.33344C7 9.43804 6.1046 10.3334 5 10.3334C3.89544 10.3334 3 9.43804 3 8.33344C3 7.22884 3.89544 6.33344 5 6.33344C6.1046 6.33344 7 7.22884 7 8.33344Z"
+                                    fill="white" />
+                            </svg>
+                            Edit this board
+                        </button>
+                    </div>
+                </li>
+                <li class="workspace-card">
+                    <img class="workspace-card__image" src="./assets/images/image2.jpg" alt="Board thumbnail" />
+                    <div class="workspace-card__content">
+                        <p class="workspace-card__title">Board Title 01</p>
+                        <button class="workspace-card__button">
+                            <svg width="13" height="14" viewBox="0 0 13 14" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M7.74754 0.871848C7.22687 0.351148 6.3826 0.351148 5.86194 0.871848L1.61928 5.11449C-0.20317 6.9369 -0.20317 9.8917 1.61928 11.7142C3.44172 13.5366 6.39647 13.5366 8.21894 11.7142L12.4616 7.4715C12.9823 6.95084 12.9823 6.10657 12.4616 5.58589L7.74754 0.871848ZM11.5188 6.5287L6.80474 1.81465L2.56209 6.0573C1.26034 7.35904 1.26034 9.46957 2.56209 10.7714C3.86384 12.0731 5.9744 12.0731 7.27614 10.7714L11.5188 6.5287ZM5.66667 8.33344C5.66667 8.70164 5.36819 9.0001 5 9.0001C4.63182 9.0001 4.33334 8.70164 4.33334 8.33344C4.33334 7.96524 4.63182 7.66677 5 7.66677C5.36819 7.66677 5.66667 7.96524 5.66667 8.33344ZM7 8.33344C7 9.43804 6.1046 10.3334 5 10.3334C3.89544 10.3334 3 9.43804 3 8.33344C3 7.22884 3.89544 6.33344 5 6.33344C6.1046 6.33344 7 7.22884 7 8.33344Z"
+                                    fill="white" />
+                            </svg>
+                            Edit this board
+                        </button>
+                    </div>
+                </li>
+                <li class="workspace-card">
+                    <img class="workspace-card__image" src="./assets/images/image3.jpg" alt="Board thumbnail" />
+                    <div class="workspace-card__content">
+                        <p class="workspace-card__title">Board Title 01</p>
+                        <button class="workspace-card__button">
+                            <svg width="13" height="14" viewBox="0 0 13 14" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M7.74754 0.871848C7.22687 0.351148 6.3826 0.351148 5.86194 0.871848L1.61928 5.11449C-0.20317 6.9369 -0.20317 9.8917 1.61928 11.7142C3.44172 13.5366 6.39647 13.5366 8.21894 11.7142L12.4616 7.4715C12.9823 6.95084 12.9823 6.10657 12.4616 5.58589L7.74754 0.871848ZM11.5188 6.5287L6.80474 1.81465L2.56209 6.0573C1.26034 7.35904 1.26034 9.46957 2.56209 10.7714C3.86384 12.0731 5.9744 12.0731 7.27614 10.7714L11.5188 6.5287ZM5.66667 8.33344C5.66667 8.70164 5.36819 9.0001 5 9.0001C4.63182 9.0001 4.33334 8.70164 4.33334 8.33344C4.33334 7.96524 4.63182 7.66677 5 7.66677C5.36819 7.66677 5.66667 7.96524 5.66667 8.33344ZM7 8.33344C7 9.43804 6.1046 10.3334 5 10.3334C3.89544 10.3334 3 9.43804 3 8.33344C3 7.22884 3.89544 6.33344 5 6.33344C6.1046 6.33344 7 7.22884 7 8.33344Z"
+                                    fill="white" />
+                            </svg>
+                            Edit this board
+                        </button>
+                    </div>
+                </li>
+                <li class="workspace-card">
+                    <img class="workspace-card__image" src="./assets/images/image3.jpg" alt="Board thumbnail" />
+                    <div class="workspace-card__content">
+                        <p class="workspace-card__title">Board Title 01</p>
+                        <button class="workspace-card__button">
+                            <svg width="13" height="14" viewBox="0 0 13 14" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M7.74754 0.871848C7.22687 0.351148 6.3826 0.351148 5.86194 0.871848L1.61928 5.11449C-0.20317 6.9369 -0.20317 9.8917 1.61928 11.7142C3.44172 13.5366 6.39647 13.5366 8.21894 11.7142L12.4616 7.4715C12.9823 6.95084 12.9823 6.10657 12.4616 5.58589L7.74754 0.871848ZM11.5188 6.5287L6.80474 1.81465L2.56209 6.0573C1.26034 7.35904 1.26034 9.46957 2.56209 10.7714C3.86384 12.0731 5.9744 12.0731 7.27614 10.7714L11.5188 6.5287ZM5.66667 8.33344C5.66667 8.70164 5.36819 9.0001 5 9.0001C4.63182 9.0001 4.33334 8.70164 4.33334 8.33344C4.33334 7.96524 4.63182 7.66677 5 7.66677C5.36819 7.66677 5.66667 7.96524 5.66667 8.33344ZM7 8.33344C7 9.43804 6.1046 10.3334 5 10.3334C3.89544 10.3334 3 9.43804 3 8.33344C3 7.22884 3.89544 6.33344 5 6.33344C6.1046 6.33344 7 7.22884 7 8.33344Z"
+                                    fill="white" />
+                            </svg>
+                            Edit this board
+                        </button>
+                    </div>
+                </li>
+                <li class="workspace-card">
+                    <img class="workspace-card__image" src="./assets/images/image4.jpg" alt="Board thumbnail" />
+                    <div class="workspace-card__content">
+                        <p class="workspace-card__title">Board Title 01</p>
+                        <button class="workspace-card__button">
+                            <svg width="13" height="14" viewBox="0 0 13 14" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M7.74754 0.871848C7.22687 0.351148 6.3826 0.351148 5.86194 0.871848L1.61928 5.11449C-0.20317 6.9369 -0.20317 9.8917 1.61928 11.7142C3.44172 13.5366 6.39647 13.5366 8.21894 11.7142L12.4616 7.4715C12.9823 6.95084 12.9823 6.10657 12.4616 5.58589L7.74754 0.871848ZM11.5188 6.5287L6.80474 1.81465L2.56209 6.0573C1.26034 7.35904 1.26034 9.46957 2.56209 10.7714C3.86384 12.0731 5.9744 12.0731 7.27614 10.7714L11.5188 6.5287ZM5.66667 8.33344C5.66667 8.70164 5.36819 9.0001 5 9.0001C4.63182 9.0001 4.33334 8.70164 4.33334 8.33344C4.33334 7.96524 4.63182 7.66677 5 7.66677C5.36819 7.66677 5.66667 7.96524 5.66667 8.33344ZM7 8.33344C7 9.43804 6.1046 10.3334 5 10.3334C3.89544 10.3334 3 9.43804 3 8.33344C3 7.22884 3.89544 6.33344 5 6.33344C6.1046 6.33344 7 7.22884 7 8.33344Z"
+                                    fill="white" />
+                            </svg>
+                            Edit this board
+                        </button>
+                    </div>
+                </li>
+                <li class="workspace-card">
+                    <img class="workspace-card__image" src="./assets/images/image5.jpg" alt="Board thumbnail" />
+                    <div class="workspace-card__content">
+                        <p class="workspace-card__title">Board Title 01</p>
+                        <button class="workspace-card__button">
+                            <svg width="13" height="14" viewBox="0 0 13 14" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M7.74754 0.871848C7.22687 0.351148 6.3826 0.351148 5.86194 0.871848L1.61928 5.11449C-0.20317 6.9369 -0.20317 9.8917 1.61928 11.7142C3.44172 13.5366 6.39647 13.5366 8.21894 11.7142L12.4616 7.4715C12.9823 6.95084 12.9823 6.10657 12.4616 5.58589L7.74754 0.871848ZM11.5188 6.5287L6.80474 1.81465L2.56209 6.0573C1.26034 7.35904 1.26034 9.46957 2.56209 10.7714C3.86384 12.0731 5.9744 12.0731 7.27614 10.7714L11.5188 6.5287ZM5.66667 8.33344C5.66667 8.70164 5.36819 9.0001 5 9.0001C4.63182 9.0001 4.33334 8.70164 4.33334 8.33344C4.33334 7.96524 4.63182 7.66677 5 7.66677C5.36819 7.66677 5.66667 7.96524 5.66667 8.33344ZM7 8.33344C7 9.43804 6.1046 10.3334 5 10.3334C3.89544 10.3334 3 9.43804 3 8.33344C3 7.22884 3.89544 6.33344 5 6.33344C6.1046 6.33344 7 7.22884 7 8.33344Z"
+                                    fill="white" />
+                            </svg>
+                            Edit this board
+                        </button>
+                    </div>
+                </li>
+                <li class="workspace-card">
+                    <img class="workspace-card__image" src="./assets/images/image6.jpg" alt="Board thumbnail" />
+                    <div class="workspace-card__content">
+                        <p class="workspace-card__title">Board Title 01</p>
+                        <button class="workspace-card__button">
+                            <svg width="13" height="14" viewBox="0 0 13 14" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M7.74754 0.871848C7.22687 0.351148 6.3826 0.351148 5.86194 0.871848L1.61928 5.11449C-0.20317 6.9369 -0.20317 9.8917 1.61928 11.7142C3.44172 13.5366 6.39647 13.5366 8.21894 11.7142L12.4616 7.4715C12.9823 6.95084 12.9823 6.10657 12.4616 5.58589L7.74754 0.871848ZM11.5188 6.5287L6.80474 1.81465L2.56209 6.0573C1.26034 7.35904 1.26034 9.46957 2.56209 10.7714C3.86384 12.0731 5.9744 12.0731 7.27614 10.7714L11.5188 6.5287ZM5.66667 8.33344C5.66667 8.70164 5.36819 9.0001 5 9.0001C4.63182 9.0001 4.33334 8.70164 4.33334 8.33344C4.33334 7.96524 4.63182 7.66677 5 7.66677C5.36819 7.66677 5.66667 7.96524 5.66667 8.33344ZM7 8.33344C7 9.43804 6.1046 10.3334 5 10.3334C3.89544 10.3334 3 9.43804 3 8.33344C3 7.22884 3.89544 6.33344 5 6.33344C6.1046 6.33344 7 7.22884 7 8.33344Z"
+                                    fill="white" />
+                            </svg>
+                            Edit this board
+                        </button>
+                    </div>
+                </li>
+                <li style="
+              width: 270px;
+              height: 130px;
+              border-radius: 5px;
+              background: #f1f2f4;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            ">
+                    <button style="
+                width: 154.78px;
+                height: 38px;
+                border-radius: 6px;
+                border: 1px solid #6c757d;
+                font-family: Roboto;
+                font-weight: 400;
+                font-size: 16px;
+                line-height: 24px;
+                text-align: center;
+                color: #6c757d;
+              ">
+                        Create new board
+                    </button>
+                </li>
+            </ul>
+
+            <div style="
+            height: 71.4px;
+            padding: 16px 0;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+          ">
+                <div style="
+              width: 32px;
+              height: 32px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            ">
+                    <svg width="32" height="31" viewBox="0 0 32 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M5.75995 29.0533C5.68884 29.5511 5.81328 29.9244 6.13328 30.1733C6.45328 30.4222 6.82661 30.4755 7.25328 30.3333L15.9999 25.7466L24.7466 30.3333C25.1733 30.4755 25.5466 30.4222 25.8666 30.1733C26.1866 29.9244 26.3111 29.5511 26.2399 29.0533L24.6399 19.6666L31.6799 12.9466C31.9644 12.5911 32.0533 12.2 31.9466 11.7733C31.8399 11.3466 31.5733 11.0978 31.1466 11.0266L21.3333 9.63998L16.9599 0.999979C16.7466 0.573313 16.4266 0.35998 15.9999 0.35998C15.5733 0.35998 15.2533 0.573313 15.0399 0.999979L10.6666 9.63998L0.959947 11.0266C0.462169 11.0978 0.159947 11.3466 0.0532799 11.7733C-0.0533867 12.2 0.0355021 12.5911 0.319947 12.9466L7.35995 19.6666L5.75995 29.0533ZM15.5733 23.6133L8.21328 27.3466L9.59995 19.4533C9.67106 19.0266 9.56439 18.6711 9.27995 18.3866L3.41328 12.84L11.5199 11.7733C11.8755 11.7022 12.1244 11.4889 12.2666 11.1333L15.9999 3.87998L19.7333 11.1333C19.8755 11.4889 20.1244 11.7022 20.4799 11.7733L28.5866 12.84L22.7199 18.3866C22.4355 18.6711 22.3288 19.0266 22.3999 19.4533L23.7866 27.3466L16.4266 23.6133C16.1422 23.4 15.8577 23.4 15.5733 23.6133Z"
+                            fill="#212529" />
+                    </svg>
+                </div>
+                <p style="
+              font-family: Roboto;
+              font-weight: 500;
+              font-size: 27.45px;
+              line-height: 33.6px;
+              color: #212529;
+            ">
+                    Starred Boards
+                </p>
+            </div>
+
+            <ul class="workspace-grid">
+                <li class="workspace-card">
+                    <img class="workspace-card__image" src="./assets/images/image1.jpg" alt="Board thumbnail" />
+                    <div class="workspace-card__content">
+                        <p class="workspace-card__title">Board Title 01</p>
+                        <button class="workspace-card__button">
+                            <svg width="13" height="14" viewBox="0 0 13 14" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M7.74754 0.871848C7.22687 0.351148 6.3826 0.351148 5.86194 0.871848L1.61928 5.11449C-0.20317 6.9369 -0.20317 9.8917 1.61928 11.7142C3.44172 13.5366 6.39647 13.5366 8.21894 11.7142L12.4616 7.4715C12.9823 6.95084 12.9823 6.10657 12.4616 5.58589L7.74754 0.871848ZM11.5188 6.5287L6.80474 1.81465L2.56209 6.0573C1.26034 7.35904 1.26034 9.46957 2.56209 10.7714C3.86384 12.0731 5.9744 12.0731 7.27614 10.7714L11.5188 6.5287ZM5.66667 8.33344C5.66667 8.70164 5.36819 9.0001 5 9.0001C4.63182 9.0001 4.33334 8.70164 4.33334 8.33344C4.33334 7.96524 4.63182 7.66677 5 7.66677C5.36819 7.66677 5.66667 7.96524 5.66667 8.33344ZM7 8.33344C7 9.43804 6.1046 10.3334 5 10.3334C3.89544 10.3334 3 9.43804 3 8.33344C3 7.22884 3.89544 6.33344 5 6.33344C6.1046 6.33344 7 7.22884 7 8.33344Z"
+                                    fill="white" />
+                            </svg>
+                            Edit this board
+                        </button>
+                    </div>
+                </li>
+                <li class="workspace-card">
+                    <img class="workspace-card__image" src="./assets/images/image2.jpg" alt="Board thumbnail" />
+                    <div class="workspace-card__content">
+                        <p class="workspace-card__title">Board Title 01</p>
+                        <button class="workspace-card__button">
+                            <svg width="13" height="14" viewBox="0 0 13 14" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M7.74754 0.871848C7.22687 0.351148 6.3826 0.351148 5.86194 0.871848L1.61928 5.11449C-0.20317 6.9369 -0.20317 9.8917 1.61928 11.7142C3.44172 13.5366 6.39647 13.5366 8.21894 11.7142L12.4616 7.4715C12.9823 6.95084 12.9823 6.10657 12.4616 5.58589L7.74754 0.871848ZM11.5188 6.5287L6.80474 1.81465L2.56209 6.0573C1.26034 7.35904 1.26034 9.46957 2.56209 10.7714C3.86384 12.0731 5.9744 12.0731 7.27614 10.7714L11.5188 6.5287ZM5.66667 8.33344C5.66667 8.70164 5.36819 9.0001 5 9.0001C4.63182 9.0001 4.33334 8.70164 4.33334 8.33344C4.33334 7.96524 4.63182 7.66677 5 7.66677C5.36819 7.66677 5.66667 7.96524 5.66667 8.33344ZM7 8.33344C7 9.43804 6.1046 10.3334 5 10.3334C3.89544 10.3334 3 9.43804 3 8.33344C3 7.22884 3.89544 6.33344 5 6.33344C6.1046 6.33344 7 7.22884 7 8.33344Z"
+                                    fill="white" />
+                            </svg>
+                            Edit this board
+                        </button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("open");
+        }
+
+        document.addEventListener("click", function (event) {
+            const sidebar = document.getElementById("sidebar");
+            const menuButton = document.querySelector(".menu-button");
+            const isClickInsideSidebar = sidebar.contains(event.target);
+            const isClickOnMenuButton = menuButton.contains(event.target);
+
+            if (
+                sidebar.classList.contains("open") &&
+                !isClickInsideSidebar &&
+                !isClickOnMenuButton
+            ) {
+                sidebar.classList.remove("open");
+            }
+        });
+
+        async function loadComponent(file, elementId) {
+            try {
+                const response = await fetch(file);
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch ${file}`);
+                }
+                const content = await response.text();
+                document.getElementById(elementId).innerHTML = content;
+            } catch (error) {
+                console.error(`Error loading ${file}:`, error);
+            }
+        }
+
+        loadComponent("./components/header.html", "header");
+        loadComponent("./components/sidebar.html", "sidebar");
+    </script>
+</body>
+
+</html>

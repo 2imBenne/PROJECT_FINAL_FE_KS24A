@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .error {
+            width: 299px;
+            background-color: #FFE5E8;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 16px;
+        }
+
+        .error__header {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .error__title-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .error__icon {
+            width: 16px;
+            height: 16px;
+            background-color: #FFB8D1;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .error__title {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 100%;
+            letter-spacing: 0;
+            color: #000000;
+        }
+
+        .error__close-icon {
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .error__messages {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 150%;
+            letter-spacing: 0;
+            color: #000000;
+            margin-left: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="error">
+        <div class="error__header">
+            <div class="error__title-group">
+                <div class="error__icon">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M7.00004 0.333332C3.32004 0.333332 0.333374 3.32 0.333374 7C0.333374 10.68 3.32004 13.6667 7.00004 13.6667C10.68 13.6667 13.6667 10.68 13.6667 7C13.6667 3.32 10.68 0.333332 7.00004 0.333332ZM10.3334 7.66667H3.66671V6.33333H10.3334V7.66667Z"
+                            fill="#E8132A" />
+                    </svg>
+                </div>
+                <p class="error__title">Error</p>
+            </div>
+            <div class="error__close-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="24" height="24" rx="12" fill="white" fill-opacity="0.35" />
+                    <path
+                        d="M16.6667 8.27333L15.7267 7.33333L12 11.06L8.27337 7.33333L7.33337 8.27333L11.06 12L7.33337 15.7267L8.27337 16.6667L12 12.94L15.7267 16.6667L16.6667 15.7267L12.94 12L16.6667 8.27333Z"
+                        fill="#445275" />
+                </svg>
+            </div>
+        </div>
+        <div class="error__messages">
+            <!-- Dynamic error messages will be injected here -->
+        </div>
+    </div>
+</body>
+</html>

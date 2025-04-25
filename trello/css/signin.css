@@ -1,0 +1,100 @@
+/* Global Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Roboto, sans-serif;
+}
+
+/* Page background */
+.signin-page {
+  width: 100vw;
+  height: 100vh;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Main form block */
+.signin-form {
+  width: 298px;
+  height: 441px;
+  padding-top: 24px;
+}
+
+/* Title */
+.signin-form__title {
+  font-size: 26.58px;
+  line-height: 33.6px;
+  margin-bottom: 20px;
+}
+
+/* Inputs */
+.signin-form__inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.signin-form__input {
+  height: 56px;
+  padding-left: 10px;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+/* Remember me checkbox */
+.signin-form__remember {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.signin-form__checkbox {
+  width: 16px;
+  height: 16px;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+}
+
+.signin-form__label {
+  font-size: 16px;
+  line-height: 24px;
+}
+
+/* Link to register */
+.signin-form__register {
+  margin-bottom: 20px;
+}
+
+.signin-form__link {
+  color: #0d6efd;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Submit button */
+.signin-form__button {
+  width: 100%;
+  height: 42px;
+  background-color: #0d6efd;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  line-height: 24px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+/* Footer */
+.signin-form__footer {
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+}

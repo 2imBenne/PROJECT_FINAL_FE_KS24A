@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #ffff;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    .container {
+      width: 298px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo {
+      width: 150px;
+      height: 42.5px;
+      margin: 0 auto;
+      margin-bottom: 24px;
+    }
+
+    .title {
+      font-size: 26.58px;
+      line-height: 33.6px;
+      font-weight: normal;
+      margin-bottom: 17px;
+    }
+
+    .input-field {
+      width: 100%;
+      height: 56px;
+      border: 1px solid #DEE2E6;
+      border-radius: 6px;
+      padding-left: 10px;
+      font-size: 16px;
+      line-height: 24px;
+      font-weight: normal;
+    }
+
+    .input-field-email {
+      border-radius: 6px 6px 0 0;
+    }
+
+    .input-field-username {
+      border-radius: 0 0 0 0;
+    }
+
+    .input-field-password {
+      border-radius: 0 0 6px 6px;
+    }
+
+    .checkbox-group {
+      margin-top: 17px;
+      margin-bottom: 17px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      border: 1px solid #DEE2E6;
+      border-radius: 4px;
+    }
+
+    .checkbox-group p {
+      font-size: 16px;
+      line-height: 24px;
+    }
+
+    .register-text {
+      font-size: 16px;
+      line-height: 24px;
+      font-weight: normal;
+      margin-top: 17px;
+      margin-bottom: 17px;
+    }
+
+    .register-text a {
+      text-decoration: underline;
+      color: #0D6EFD;
+      cursor: pointer;
+    }
+
+    .sign-in-btn {
+      width: 100%;
+      height: 42px !important;
+      background-color: #0D6EFD;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      line-height: 24px;
+      font-weight: normal;
+      text-align: center;
+      cursor: pointer;
+      margin-bottom: 48px;
+    }
+
+    .footer-text {
+      font-size: 16px;
+      line-height: 24px;
+      font-weight: normal;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <img class="logo" src="./assets/images/logo.png" alt="logo" />
+    <p class="title">Please sign up</p>
+    <div>
+      <input type="text" placeholder="Email address" class="input-field input-field-email" id="email" />
+      <input type="text" placeholder="Username" class="input-field input-field-username" id="username" />
+      <input type="password" placeholder="Password" class="input-field input-field-password" id="password" />
+    </div>
+    <div>
+      <p class="register-text">Already have an account, <a href="/sign-in.html">click here !</a>
+      </p>
+    </div>
+    <button class="sign-in-btn" onclick="handleSignUp()">Sign up</button>
+    <p class=" footer-text">© 2025 - Rikkei Education</p>
+  </div>
+
+  <div id="toast-container" style="position: fixed; top: 20px; left: 20px; z-index: 1000;"></div>
+
+  <script>
+    const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers')) || [
+      { email: "123@gmail.com", username: "user123", password: "123" }
+    ];
+
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
+
+    async function showToast(type, messageOrErrors = []) {
+      const toastContainer = document.getElementById('toast-container');
+      let toastHtml;
+
+      try {
+        const response = await fetch(`./components/toast${type}.html`);
+        toastHtml = await response.text();
+      } catch (error) {
+        console.error('Error loading toast component:', error);
+        return;
+      }
+
+      const toastElement = document.createElement('div');
+      toastElement.innerHTML = toastHtml;
+
+      if (type === 'Error' && messageOrErrors.length > 0) {
+        const errorMessagesDiv = toastElement.querySelector('.error__messages');
+        if (errorMessagesDiv) {
+          errorMessagesDiv.innerHTML = messageOrErrors.join('<br>');
+        }
+      }
+      else if (type === 'Success' && messageOrErrors) {
+        const successMessagesDiv = toastElement.querySelector('.notification__messages-success');
+        if (successMessagesDiv) {
+          successMessagesDiv.innerHTML = messageOrErrors;
+        }
+      }
+
+      toastContainer.appendChild(toastElement);
+
+      const closeButton = toastElement.querySelector('.close-icon-container');
+      if (closeButton) {
+        closeButton.addEventListener('click', () => {
+          toastElement.remove();
+        });
+      }
+
+      setTimeout(() => {
+        toastElement.remove();
+      }, 3000);
+    }
+
+    function handleSignUp() {
+      const email = document.getElementById('email').value.trim();
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const errors = [];
+
+      if (!email) {
+        errors.push('Email không được bỏ trống');
+      }
+      if (!username) {
+        errors.push('Tên người dùng không được bỏ trống');
+      }
+      if (!password) {
+        errors.push('Mật khẩu không được bỏ trống');
+      }
+      if (email && !validateEmail(email)) {
+        errors.push('Email không hợp lệ');
+      }
+      if (username && username.length < 3) {
+        errors.push('Tên người dùng phải có ít nhất 3 ký tự');
+      }
+      if (password && password.length < 8) {
+        errors.push('Mật khẩu phải có ít nhất 8 ký tự');
+      }
+      if (email && registeredUsers.some(user => user.email === email)) {
+        errors.push('Email đã được sử dụng');
+      }
+
+      if (errors.length > 0) {
+        showToast('Error', errors);
+        return;
+      }
+
+      registeredUsers.push({ email, username, password });
+      localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
+      showToast('Success', 'Đăng ký thành công');
+      setTimeout(() => {
+        window.location.href = 'sign-in.html';
+      }, 1500);
+    }
+
+    document.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        handleSignUp();
+      }
+    });
+  </script>
+</body>
+
+</html>
