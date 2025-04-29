@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trello Clone - Figma Layout</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- App Header -->
+    <header class="app-header">
+        <div class="header-logo-container">
+            <!-- Placeholder for trello-logo-full.png (id: 1:548) -->
+            <img src="assets/images/trello-logo-full.png.png" alt="Trello Logo" class="header-logo">
+        </div>
+        <!-- Mobile Header Icons -->
+        <div class="header-mobile-icons">
+             <button class="icon-btn search-btn"><i class="fas fa-search"></i></button>
+            <button class="icon-btn menu-toggle-btn"><i class="fas fa-bars"></i></button>
+        </div>
+    </header>
+
+    <!-- App Container -->
+    <div class="app-container">
+        <!-- Sidebar (id: 1:474) -->
+        <aside class="sidebar">
+            <div class="sidebar-mobile-header">
+                <img src="assets/images/trello-logo-full.png.png" alt="Trello Logo" class="sidebar-mobile-logo">
+                <button class="icon-btn sidebar-close-btn"><i class="fas fa-times"></i></button>
+            </div>
+            <nav class="sidebar-nav">
+                <!-- YOUR WORKSPACES Section (id: 1:477, 1:478) -->
+                <div class="nav-section">
+                    <h3 class="nav-section-title">YOUR WORKSPACES</h3>
+                    <ul>
+                        <!-- Boards Link (id: 1:479) -->
+                        <li><a href="#" class="active"><i class="fas fa-clipboard-list fa-fw"></i> Boards</a></li>
+                        <!-- Starred Boards Link (id: 1:483) -->
+                        <li><a href="#"><i class="far fa-star fa-fw"></i> Starred Boards</a></li>
+                        <!-- Closed Boards Link (id: 1:487) -->
+                        <li><a href="#"><i class="fas fa-box-archive fa-fw"></i> Closed Boards</a></li>
+                    </ul>
+                </div>
+                <!-- Separator (id: 1:491) -->
+                <hr class="separator">
+                <!-- Settings/Sign out Section (id: 1:492) -->
+                <ul>
+                    <!-- Settings Link (id: 1:493) -->
+                    <li><a href="#"><i class="fas fa-cog fa-fw"></i> Settings</a></li>
+                    <!-- Sign out Link (id: 1:497) -->
+                    <li><a href="#" id="logout-btn"><i class="fas fa-sign-out-alt fa-fw"></i> Sign out</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content (id: 1:501) -->
+        <main class="main-content">
+            <!-- Main Header within Content (id: 1:502) -->
+            <header class="main-header">
+                 <!-- Left side: Title (id: 1:503) -->
+                <div class="main-header-left">
+                     <i class="fas fa-bars fa-xl"></i> <!-- Icon approx. id: 1:504 -->
+                    <h2>Your Workspaces</h2> <!-- Text id: 1:506 -->
+                </div>
+                <!-- Right side: Buttons -->
+                <div class="main-header-right">
+                    <!-- Share Button (id: 1:512) -->
+                    <button class="btn btn-outline">Share</button>
+                    <!-- Export Button (id: 1:514) -->
+                    <button class="btn btn-outline">Export</button>
+                    <!-- This week Button (id: 1:507) -->
+                    <button class="btn btn-outline dropdown-btn">
+                        <i class="far fa-calendar-alt"></i> <!-- Icon approx. id: 1:508 -->
+                        This week
+                        <i class="fas fa-caret-down"></i> <!-- Icon approx. id: 1:511 -->
+                    </button>
+                </div>
+            </header>
+
+            <!-- First Boards Section (Your Workspaces) -->
+            <section class="boards-section">
+                <div class="boards-grid">
+                    <!-- Board Card 1 (id: 1:516) -->
+                    <div class="board-card board-card-image">
+                        <div class="board-card-overlay"></div>
+                        <img class="board-img" src="https://photo.znews.vn/w660/Uploaded/mdf_eioxrd/2021_07_06/2.jpg" alt="Board 1" />
+                        
+                        <div class="board-card-content">
+                             <h3 class="board-title">Board Title 01</h3>
+                             <button class="btn btn-edit"><i class="fas fa-pencil-alt"></i> Edit this board</button>
+                        </div>
+                    </div>
+                    <!-- Board Card 2 (id: 1:523) -->
+                    <div class="board-card board-card-image">
+                        <div class="board-card-overlay"></div>
+                        <img class="board-img" src="https://photo.znews.vn/w660/Uploaded/mdf_eioxrd/2021_07_06/2.jpg" alt="Board 2" />
+                        <div class="board-card-content">
+                             <h3 class="board-title">Board Title 02</h3>
+                             <button class="btn btn-edit"><i class="fas fa-pencil-alt"></i> Edit this board</button>
+                        </div>
+                    </div>
+                    <!-- Board Card 3 (id: 1:526) -->
+                    <div class="board-card board-card-image">
+                        <div class="board-card-overlay"></div>
+                        <img class="board-img" src="https://photo.znews.vn/w660/Uploaded/mdf_eioxrd/2021_07_06/2.jpg" alt="Board 3" />
+                        <div class="board-card-content">
+                            <h3 class="board-title">Board Title 03...</h3>
+                            <button class="btn btn-edit"><i class="fas fa-pencil-alt"></i> Edit this board</button>
+                        </div>
+                    </div>
+                    <!-- Board Card 4 (id: 1:529) -->
+                    <div class="board-card board-card-image">
+                        <div class="board-card-overlay"></div>
+                        <img class="board-img" src="https://photo.znews.vn/w660/Uploaded/mdf_eioxrd/2021_07_06/2.jpg" alt="Board 4" />
+                        <div class="board-card-content">
+                             <h3 class="board-title">Board Title 01</h3>
+                             <button class="btn btn-edit"><i class="fas fa-pencil-alt"></i> Edit this board</button>
+                        </div>
+                    </div>
+                     <!-- Create New Board Card (id: 1:532) -->
+                    <div class="board-card create-board-card">
+                        <button class="btn btn-create-outline">Create new board</button> <!-- Button id: 1:533 -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Second Boards Section (Starred Boards) -->
+            <section class="boards-section boards-section-starred">
+                <header class="boards-header">
+                    <i class="far fa-star fa-lg"></i>
+                    <h3>Starred Boards</h3>
+                </header>
+                <div class="boards-grid">
+                    <!-- Starred Board 1 (id: 1:540) -->
+                     <div class="board-card board-card-image">
+                        <div class="board-card-overlay"></div>
+                        <img class="board-img" src="https://photo.znews.vn/w660/Uploaded/mdf_eioxrd/2021_07_06/2.jpg" alt="Starred Board 1" />
+                        <button class="btn change-img-btn" title="Change image"><i class="fas fa-image"></i></button>
+                        <div class="board-card-content">
+                            <h3 class="board-title">Important Board 01</h3>
+                            <button class="btn btn-edit"><i class="fas fa-pencil-alt"></i> Edit this board</button>
+                        </div>
+                    </div>
+                    <!-- Starred Board 2 (id: 1:543) -->
+                     <div class="board-card board-card-image">
+                        <div class="board-card-overlay"></div>
+                        <img class="board-img" src="https://photo.znews.vn/w660/Uploaded/mdf_eioxrd/2021_07_06/2.jpg" alt="Starred Board 2" />
+                        <img class="board-img" src="assets/images/board-bg-3.png" alt="Starred Board 2" />
+                        <div class="board-card-content">
+                            <h3 class="board-title">Important Board 02</h3> <!-- Text id: 1:545 -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Third Boards Section (Closed Boards, ẩn mặc định) -->
+            <section class="boards-section boards-section-closed" style="display:none;">
+                <header class="boards-header">
+                    <i class="fas fa-box-archive fa-lg"></i>
+                    <h3>Closed Boards</h3>
+                </header>
+                <div class="boards-grid"></div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay"></div>
+
+    <!-- Modal: Create New Board -->
+    <div id="modal-create-board" class="modal-board" style="display:none;">
+      <div class="modal-board-overlay"></div>
+      <div class="modal-board-content">
+        <div class="modal-board-header">
+          <h2 class="modal-board-title">Create board</h2>
+          <button class="modal-board-close" title="Close"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-board-section">
+          <label class="modal-board-label">Background</label>
+          <div class="modal-board-bg-list">
+            <button class="modal-board-bg-option" data-bg="bg1" style="background-image:url('assets/images/board-bg-1.png');"></button>
+            <button class="modal-board-bg-option" data-bg="bg2" style="background-image:url('assets/images/board-bg-2.png');"></button>
+            <button class="modal-board-bg-option" data-bg="bg3" style="background-image:url('assets/images/board-bg-3.png');"></button>
+            <button class="modal-board-bg-option" data-bg="bg4" style="background-image:url('assets/images/board-bg-4.png');"></button>
+          </div>
+        </div>
+        <div class="modal-board-section">
+          <label class="modal-board-label">Color</label>
+          <div class="modal-board-color-list">
+            <button class="modal-board-color-option" data-color="#FFA800" style="background:linear-gradient(90deg,#FFA800 0%,#FA0 100%);"></button>
+            <button class="modal-board-color-option" data-color="#2609FF" style="background:linear-gradient(90deg,#2609FF 0%,#D20CFF 100%);"></button>
+            <button class="modal-board-color-option" data-color="#00FF2F" style="background:linear-gradient(90deg,#00FF2F 0%,#00C8C8 100%);"></button>
+            <button class="modal-board-color-option" data-color="#FFD600" style="background:linear-gradient(90deg,#FFD600 0%,#EDFA00 100%);"></button>
+            <button class="modal-board-color-option" data-color="#FF00EA" style="background:linear-gradient(90deg,#FF00EA 0%,#FA0 100%);"></button>
+            <button class="modal-board-color-option" data-color="#00E5FF" style="background:linear-gradient(90deg,#00E5FF 0%,#0047FF 100%);"></button>
+          </div>
+        </div>
+        <div class="modal-board-section">
+          <label class="modal-board-label">Board title <span class="required">*</span></label>
+          <input type="text" class="modal-board-input" id="modal-board-title-input" placeholder="E.g. Shopping list for birthday..." maxlength="50" />
+          <div class="modal-board-error" id="modal-board-title-error" style="display:none;">👋 Please provide a valid board title.</div>
+        </div>
+        <div class="modal-board-footer">
+          <button class="modal-board-btn modal-board-btn-cancel">Close</button>
+          <button class="modal-board-btn modal-board-btn-create">Create</button>
+        </div>
+      </div>
+    </div>
+    <!-- End Modal: Create New Board -->
+
+    <!-- Modal Confirm Delete Board -->
+    <div id="modal-confirm-delete" class="modal-confirm-delete" style="display:none;">
+      <div class="modal-confirm-content">
+        <div class="modal-confirm-icon">
+          <i class="fas fa-exclamation-circle"></i>
+        </div>
+        <div class="modal-confirm-title">Are you sure?</div>
+        <div class="modal-confirm-desc">You won't be able to revert this!</div>
+        <div class="modal-confirm-actions">
+          <button class="modal-confirm-btn modal-confirm-btn-yes">Yes, close it!</button>
+          <button class="modal-confirm-btn modal-confirm-btn-cancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="scripts/main.js"></script>
+    <script>
+      if (!localStorage.getItem('currentUser') && !window.location.pathname.endsWith('register.html')) {
+        window.location.href = 'login.html';
+      }
+    </script>
+</body>
+</html> 

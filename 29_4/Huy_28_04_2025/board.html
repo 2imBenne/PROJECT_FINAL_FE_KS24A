@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Board Detail - Trello Clone</title>
+  <link rel="stylesheet" href="./styles/board.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-mobile-header">
+        <img src="assets/images/trello-logo-full.png.png" alt="Trello Logo" class="sidebar-mobile-logo">
+        <button class="icon-btn sidebar-close-btn"><i class="fas fa-times"></i></button>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <h3 class="nav-section-title">YOUR WORKSPACES</h3>
+          <ul>
+            <li><a href="index.html" class="active"><i class="fas fa-clipboard-list fa-fw"></i> Boards</a></li>
+            <li><a href="#"><i class="far fa-star fa-fw"></i> Starred Boards</a></li>
+            <li><a href="#"><i class="fas fa-box-archive fa-fw"></i> Closed Boards</a></li>
+          </ul>
+        </div>
+        <hr class="separator">
+        <ul>
+          <li><a href="#"><i class="fas fa-cog fa-fw"></i> Settings</a></li>
+          <li><a href="#" id="logout-btn"><i class="fas fa-sign-out-alt fa-fw"></i> Sign out</a></li>
+        </ul>
+      </nav>
+      <div class="sidebar-boards-list" id="sidebarBoardsList">
+        <!-- Danh sách board sẽ render ở đây bằng JS -->
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="main-header board-header">
+        <div class="board-header-left">
+          <h1 class="board-title" id="boardTitle">Tên board</h1>
+          <button class="btn btn-star-board" id="starBoardBtn"><i class="far fa-star"></i></button>
+          <nav class="board-tabs">
+            <button class="tab-btn active">Board</button>
+            <button class="tab-btn">Table</button>
+          </nav>
+          <button class="btn btn-close-board" id="closeBoardBtn"><i class="fas fa-box-archive"></i> Close this board</button>
+        </div>
+        <div class="board-header-right">
+          <button class="btn btn-filter" id="filterBtn"><i class="fas fa-filter"></i> Filters</button>
+        </div>
+      </header>
+      <section class="kanban-board" id="kanbanBoard">
+        <!-- Các list sẽ render ở đây bằng JS -->
+      </section>
+    </main>
+  </div>
+
+  <!-- Sidebar Overlay -->
+  <div class="sidebar-overlay"></div>
+
+  <!-- Modal: Thêm/Sửa List -->
+  <div class="modal modal-list" id="modalList" style="display:none;">
+    <div class="modal-content">
+      <h3 id="modalListTitle">Add list</h3>
+      <form id="modalListForm">
+        <input type="text" id="modalListInput" placeholder="Enter list name..." required />
+        <div class="modal-board-error" id="modalListError" style="display:none;">👋 Please provide a valid list name.</div>
+        <div class="modal-actions">
+          <button type="button" class="modal-board-btn modal-board-btn-cancel" id="modalListCancel">Cancel</button>
+          <button type="submit" class="modal-board-btn modal-board-btn-create" id="modalListSubmit">Add list</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Confirm Xoá List -->
+  <div class="modal modal-confirm" id="modalConfirmDeleteList" style="display:none;">
+    <div class="modal-content">
+      <div class="modal-confirm-icon">
+        <i class="fas fa-exclamation-circle"></i>
+      </div>
+      <div class="modal-confirm-title">Are you sure?</div>
+      <div class="modal-confirm-desc">You won't be able to revert this!</div>
+      <div class="modal-actions">
+        <button class="modal-confirm-btn modal-confirm-btn-yes" id="btnDeleteList">Yes, delete it!</button>
+        <button class="modal-confirm-btn modal-confirm-btn-cancel" id="btnCancelDeleteList">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Thêm/Sửa Card -->
+  <div class="modal modal-add-card" id="modalAddCard" style="display:none;">
+    <div class="modal-content">
+      <form id="modalAddCardForm">
+        <input type="text" id="modalAddCardInput" placeholder="Enter a title or paste a link" required />
+        <div class="modal-actions">
+          <button type="submit" class="btn btn-primary" id="modalAddCardSubmit">Add card</button>
+          <button type="button" class="btn btn-cancel btn-add-card-cancel" id="modalAddCardCancel"><i class="fas fa-times"></i></button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Filter -->
+  <div class="modal modal-filter" id="modalFilter" style="display:none;">
+    <div class="modal-content">
+      <h3>Filter</h3>
+      <div class="modal-filter-section">
+        <label>Keyword</label>
+        <input type="text" id="filterKeywordInput" placeholder="Enter a keyword...">
+        <p>Search cards,</p>
+      </div>
+      <div class="modal-filter-section">
+        <label>Card status</label>
+        <label><input type="checkbox" id="filterStatusComplete"> Marked as complete</label>
+        <label><input type="checkbox" id="filterStatusIncomplete"> Not marked as complete</label>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="btnApplyFilter">Apply</button>
+        <button class="btn btn-cancel" id="btnCancelFilter">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Add New Board -->
+  <div class="modal modal-add-board" id="modalAddBoard" style="display:none;">
+    <div class="modal-content">
+      <h3>Add new board</h3>
+      <form id="modalAddBoardForm">
+        <div class="modal-add-board-section">
+          <label>Title</label>
+          <input type="text" id="modalAddBoardTitle" placeholder="Enter board title..." required />
+          <div class="modal-board-error" id="modalAddBoardError" style="display:none;">👋 Please provide a valid board title.</div>
+        </div>
+        <div class="modal-add-board-section">
+          <label>Starred</label>
+          <label><input type="checkbox" id="modalAddBoardStarred"> Star this board</label>
+        </div>
+        <div class="modal-add-board-section">
+          <label>Background</label>
+          <div class="background-options">
+            <button type="button" class="background-option" style="background: #0079bf;" data-bg="#0079bf"></button>
+            <button type="button" class="background-option" style="background: #d29034;" data-bg="#d29034"></button>
+            <button type="button" class="background-option" style="background: #519839;" data-bg="#519839"></button>
+            <button type="button" class="background-option" style="background: #b04632;" data-bg="#b04632"></button>
+            <button type="button" class="background-option" style="background: #89609e;" data-bg="#89609e"></button>
+            <button type="button" class="background-option" style="background: #cd5a91;" data-bg="#cd5a91"></button>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-cancel" id="modalAddBoardCancel">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="modalAddBoardSubmit">Create</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="./scripts/board.js"></script>
+</body>
+</html>
