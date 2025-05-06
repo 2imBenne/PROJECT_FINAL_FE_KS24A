@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Board Detail - Trello Clone</title>
+  <link rel="stylesheet" href="./styles/board.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- App Header -->
+    <header class="app-header">
+        <div onclick="window.location.href = './index.html'" style="cursor : pointer" class="header-logo-container">
+            <!-- Placeholder for trello-logo-full.png -->
+            <img src="assets/images/trello-logo-full.png.png" alt="Trello Logo" class="header-logo">
+        </div>
+        <!-- Mobile Header Icons -->
+        <div class="header-mobile-icons">
+             <button class="icon-btn search-btn"><i class="fas fa-search"></i></button>
+            <button class="icon-btn menu-toggle-btn"><i class="fas fa-bars"></i></button>
+        </div>
+    </header>
+  <div class="app-container">
+      <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <!-- YOUR WORKSPACES Section -->
+                <div class="nav-section">
+                    <h3 class="nav-section-title">YOUR WORKSPACES</h3>
+                    <ul>
+                        <!-- Boards Link -->
+                        <li><a href="#" class="active"><i class="fas fa-clipboard-list fa-fw"></i> Boards</a></li>
+                        <!-- Starred Boards Link -->
+                        <li><a href="#"><i class="far fa-star fa-fw"></i> Starred Boards</a></li>
+                        <!-- Closed Boards Link -->
+                        <li><a href="#"><i class="fas fa-box-archive fa-fw"></i> Closed Boards</a></li>
+                    </ul>
+                </div>
+                <!-- Your boards section moved up here -->
+                <div class="sidebar-boards-list" id="sidebarBoardsList">
+                  <div class="sidebar-list-header">
+                    <span>Your boards</span>
+                    <button class="btn btn-add-board" title="Add board"><i class="fas fa-plus"></i></button>
+                  </div>
+                  <ul class="sidebar-board-list-items">
+                    <!-- JS sẽ render từng board như sau: -->
+                    <!--
+                    <li class="sidebar-board-item active">
+                      <span class="sidebar-board-thumb" style="background: #1976D2;"></span>
+                      123123213
+                    </li>
+                    <li class="sidebar-board-item">
+                      <img class="sidebar-board-thumb" src="..." alt="Board thumb" />
+                      42314
+                    </li>
+                    <li class="sidebar-board-item">
+                      <span class="sidebar-board-color" style="background: #cd5a91;"></span>
+                      My Trello board
+                    </li>
+                    <li class="sidebar-board-item active">
+                      <img class="sidebar-board-thumb" src="..." alt="Board thumb" />
+                      Tổ chức sự kiện ...
+                    </li>
+                    -->
+                  </ul>
+                </div>
+                <!-- Separator -->
+                <hr class="separator">
+            </nav>
+        </aside>
+    <!-- Sidebar -->
+
+    <!-- Main Content -->
+    <main class="main-content custom-main-content">
+      <header class="main-header board-header custom-board-header">
+        <div class="board-header-left">
+          <h1 class="board-title" id="boardTitle">Tên board</h1>
+          <button class="btn btn-star-board" id="starBoardBtn"><i class="far fa-star"></i></button>
+          <nav class="board-tabs">
+            <button class="tab-btn active">Board</button>
+            <button class="tab-btn">Table</button>
+          </nav>
+          <button class="btn btn-close-board" id="closeBoardBtn"><i class="fas fa-box-archive"></i> Close this board</button>
+        </div>
+        <div class="board-header-right">
+          <button class="btn btn-filter" id="filterBtn"><i class="fas fa-filter"></i> Filters</button>
+        </div>
+      </header>
+      <section class="kanban-board" id="kanbanBoard">
+        <!-- Các list sẽ render ở đây bằng JS -->
+      </section>
+    </main>
+  </div>
+
+  <!-- Sidebar Overlay -->
+  <div class="sidebar-overlay"></div>
+
+  <!-- Modal: Thêm/Sửa List -->
+  <div class="modal modal-list" id="modalList" style="display:none;">
+    <div class="modal-content">
+      <h3 id="modalListTitle">Add list</h3>
+      <form id="modalListForm">
+        <input type="text" id="modalListInput" placeholder="Enter list name..." required />
+        <div class="modal-board-error" id="modalListError" style="display:none;">👋 Please provide a valid list name.</div>
+        <div class="modal-actions">
+          <button type="button" class="modal-board-btn modal-board-btn-cancel" id="modalListCancel">Cancel</button>
+          <button type="submit" class="modal-board-btn modal-board-btn-create" id="modalListSubmit">Add list</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Confirm Xoá List -->
+  <div class="modal modal-confirm" id="modalConfirmDeleteList" style="display:none;">
+    <div class="modal-content">
+      <div class="modal-confirm-icon">
+        <i class="fas fa-exclamation-circle"></i>
+      </div>
+      <div class="modal-confirm-title">Are you sure?</div>
+      <div class="modal-confirm-desc">You won't be able to revert this!</div>
+      <div class="modal-actions">
+        <button class="modal-confirm-btn modal-confirm-btn-yes" id="btnDeleteList">Yes, delete it!</button>
+        <button class="modal-confirm-btn modal-confirm-btn-cancel" id="btnCancelDeleteList">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Thêm/Sửa Card -->
+  <div class="modal modal-add-card" id="modalAddCard" style="display:none;">
+    <div class="modal-content">
+      <form id="modalAddCardForm">
+        <input type="text" id="modalAddCardInput" placeholder="Enter a title or paste a link" required />
+        <div class="modal-actions">
+          <button type="submit" class="btn btn-primary" id="modalAddCardSubmit">Add card</button>
+          <button type="button" class="btn btn-cancel btn-add-card-cancel" id="modalAddCardCancel"><i class="fas fa-times"></i></button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Filter -->
+  <div class="modal modal-filter" id="modalFilter" style="display:none;">
+    <div class="modal-content">
+      <h3>Filter</h3>
+      <div class="modal-filter-section">
+        <label>Keyword</label>
+        <input type="text" id="filterKeywordInput" placeholder="Enter a keyword...">
+        <p>Search cards,</p>
+      </div>
+      <div class="modal-filter-section">
+        <label>Card status</label>
+        <label><input type="checkbox" id="filterStatusComplete"> Marked as complete</label>
+        <label><input type="checkbox" id="filterStatusIncomplete"> Not marked as complete</label>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="btnApplyFilter">Apply</button>
+        <button class="btn btn-cancel" id="btnCancelFilter">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Add New Board -->
+  <div class="modal modal-add-board" id="modalAddBoard" style="display:none;">
+    <div class="modal-content">
+      <h3>Add new board</h3>
+      <form id="modalAddBoardForm">
+        <div class="modal-add-board-section">
+          <label>Title</label>
+          <input type="text" id="modalAddBoardTitle" placeholder="Enter board title..." required />
+          <div class="modal-board-error" id="modalAddBoardError" style="display:none;">👋 Please provide a valid board title.</div>
+        </div>
+        <div class="modal-add-board-section">
+          <label>Starred</label>
+          <label><input type="checkbox" id="modalAddBoardStarred"> Star this board</label>
+        </div>
+        <div class="modal-add-board-section">
+          <label>Background</label>
+          <div class="background-options">
+            <button type="button" class="background-option" style="background: #0079bf;" data-bg="#0079bf"></button>
+            <button type="button" class="background-option" style="background: #d29034;" data-bg="#d29034"></button>
+            <button type="button" class="background-option" style="background: #519839;" data-bg="#519839"></button>
+            <button type="button" class="background-option" style="background: #b04632;" data-bg="#b04632"></button>
+            <button type="button" class="background-option" style="background: #89609e;" data-bg="#89609e"></button>
+            <button type="button" class="background-option" style="background: #cd5a91;" data-bg="#cd5a91"></button>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-cancel" id="modalAddBoardCancel">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="modalAddBoardSubmit">Create</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Task Detail (Figma style) -->
+  <div class="modal" id="modalTaskDetail" style="display:none;">
+    <div class="modal-content task-detail-modal">
+      <div class="task-detail-main">
+        <div class="task-detail-header">
+          <span class="task-detail-status-icon"><i class="far fa-circle"></i></span>
+          <input type="text" id="taskDetailTitle" class="task-detail-title" value="" />
+        </div>
+        <div class="task-detail-list-row">
+          <span class="task-detail-list-label">in list</span>
+          <span class="task-detail-list-badge" id="taskDetailListName">List name</span>
+        </div>
+        <div class="task-detail-section">
+          <label class="task-detail-desc-label"><i class="fas fa-align-left"></i> Description</label>
+          <div class="task-detail-desc-editor">
+            <div class="task-detail-toolbar">
+              <button><b>Aa</b></button>
+              <button><b>B</b></button>
+              <button><i>I</i></button>
+              <button><i class="fas fa-list-ul"></i></button>
+              <button><i class="fas fa-link"></i></button>
+              <button><i class="fas fa-image"></i></button>
+              <button><i class="fas fa-plus"></i></button>
+              <button><i class="fas fa-sparkles"></i></button>
+              <button><i class="fas fa-paperclip"></i></button>
+              <button><i class="fas fa-robot"></i></button>
+              <button><i class="fas fa-question"></i></button>
+            </div>
+            <textarea id="taskDetailDesc" class="task-detail-desc" placeholder="Add a more detailed description..."></textarea>
+            <div id="taskDetailDescError" style="color:#eb5a46;font-size:14px;display:none;margin-top:4px;">Bạn phải nhập mô tả!</div>
+          </div>
+        </div>
+        <div class="task-detail-actions">
+          <button class="btn btn-primary" id="taskDetailSave">Save</button>
+          <button class="btn btn-cancel" id="taskDetailCancel">Cancel</button>
+        </div>
+      </div>
+      <div class="task-detail-sidebar">
+        <button class="task-detail-labels"><i class="fas fa-tag"></i> Labels</button>
+        <button class="task-detail-dates"><i class="fas fa-clock"></i> Dates</button>
+        <button class="task-detail-delete btn-danger"><i class="fas fa-minus"></i> Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal xác nhận xóa card -->
+  <div class="modal modal-confirm" id="modalConfirmDeleteCard" style="display:none;">
+    <div class="modal-content">
+      <div class="modal-confirm-icon" style="color:#FFA800;font-size:48px;text-align:center;">
+        <i class="fas fa-exclamation-circle"></i>
+      </div>
+      <div class="modal-confirm-title" style="text-align:center;font-size:2rem;font-weight:600;">Are you sure?</div>
+      <div class="modal-confirm-desc" style="text-align:center;color:#6b7280;font-size:1.1rem;">You won't be able to revert this!</div>
+      <div class="modal-actions" style="justify-content:center;gap:16px;">
+        <button class="modal-confirm-btn modal-confirm-btn-yes" id="btnDeleteCardYes" style="background:#3085d6;color:#fff;">Yes, delete it!</button>
+        <button class="modal-confirm-btn modal-confirm-btn-cancel" id="btnDeleteCardCancel" style="background:#eb5a46;color:#fff;">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dates Modal -->
+  <div class="modal" id="datesModal" style="display:none;">
+    <div class="modal-content dates-modal">
+      <div class="modal-header">
+        <h3>Dates</h3>
+        <button class="close-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="calendar-container">
+          <div class="calendar-header">
+            <button class="prev-month">&lt;</button>
+            <h4 class="current-month">March 2024</h4>
+            <button class="next-month">&gt;</button>
+          </div>
+          <div class="calendar-weekdays">
+            <div>Sun</div>
+            <div>Mon</div>
+            <div>Tue</div>
+            <div>Wed</div>
+            <div>Thu</div>
+            <div>Fri</div>
+            <div>Sat</div>
+          </div>
+          <div class="calendar-days"></div>
+        </div>
+        <div class="date-inputs">
+          <div class="date-input-group">
+            <label class="date-label">
+              <input type="checkbox" id="startDateCheck">
+              <span>Start date</span>
+            </label>
+            <div class="date-row">
+              <input type="text" id="startDateInput" placeholder="M/D/YYYY" readonly>
+            </div>
+          </div>
+          <div class="date-input-group">
+            <label class="date-label">
+              <input type="checkbox" id="dueDateCheck">
+              <span>Due date</span>
+            </label>
+            <div class="date-row">
+              <input type="text" id="dueDateInput" placeholder="M/D/YYYY" readonly>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary save-dates">Save</button>
+        <button class="btn btn-secondary remove-dates">Remove</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Labels Modal: Danh sách label -->
+  <div class="modal" id="labelsModal" style="display:none;">
+    <div class="modal-content labels-modal">
+      <div class="modal-header">
+        <span>Labels</span>
+        <button class="close-labels-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="labels-list" id="labelsList">
+          <!-- JS render: mỗi label 1 dòng, có checkbox, màu, tên, nút edit -->
+        </div>
+        <button class="btn btn-create-label" id="btnShowCreateLabel">Create a new label</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Labels Modal: Tạo label mới -->
+  <div class="modal" id="createLabelModal" style="display:none;">
+    <div class="modal-content labels-modal">
+      <div class="modal-header">
+        <button class="back-to-labels" style="background:none;border:none;font-size:1.3rem;cursor:pointer;">&#8592;</button>
+        <span style="flex:1;text-align:center;">Create label</span>
+        <button class="close-labels-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <label>Title</label>
+        <input type="text" id="createLabelTitle" maxlength="30" placeholder="Label name..." />
+        <label style="margin-top:12px;">Select a color</label>
+        <div class="label-color-palette" id="createLabelColors">
+          <!-- JS render: các màu chọn -->
+        </div>
+        <button class="btn btn-primary" id="btnCreateLabel">Create</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Labels Modal: Sửa label -->
+  <div class="modal" id="editLabelModal" style="display:none;">
+    <div class="modal-content labels-modal">
+      <div class="modal-header">
+        <button class="back-to-labels" style="background:none;border:none;font-size:1.3rem;cursor:pointer;">&#8592;</button>
+        <span style="flex:1;text-align:center;">Edit label</span>
+        <button class="close-labels-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <label>Title</label>
+        <input type="text" id="editLabelTitle" maxlength="30" />
+        <label style="margin-top:12px;">Select a color</label>
+        <div class="label-color-palette" id="editLabelColors">
+          <!-- JS render: các màu chọn -->
+        </div>
+        <div style="display:flex;gap:8px;margin-top:16px;">
+          <button class="btn btn-primary" id="btnSaveLabel">Save</button>
+          <button class="btn btn-danger" id="btnDeleteLabel">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./scripts/board.js"></script>
+</body>
+</html>
